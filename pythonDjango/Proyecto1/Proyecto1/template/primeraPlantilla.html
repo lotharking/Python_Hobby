@@ -20,7 +20,7 @@ Hola estamos trabajando en nuestra primera plantilla
     <ul>
         {% if temas %}
             {%for elTema in temas%}
-                <li>{{elTema|first|lower}}</li>
+                <li>{{elTema|first|upper}}</li>
             {% endfor %}
         {% else %}
             <p>Por favor llene primero la lista de datos</p>
