@@ -1,9 +1,31 @@
 <html>
 <body>
 <h1 style="color: blue;">    
-Hola mundo
+Hola estamos trabajando en nuestra primera plantilla
 </h1>
-<p>El nombre del profesor es {{nombre_persona}} {{apellido}}</p>
+<h2>
+    {# comentario una linea#}
+    {% comment %}esto es de varias lineas
+    {% endcomment %}
+    {% if nombre_persona == 'Andres' %}
+        <p>El curso lo imparte el profesor titular</p>
+    {% else %}
+        <p>El curso lo imparte el profesor suplente</p>
+    {% endif %}
+</h2>
+<p>El nombre del profesor es {{nombre_persona|upper}} {{apellido.upper}}</p>
 <p>Se esta trabajando en la fecha: {{fecha.date}}</p>
+<p><strong>Temas del curso:</strong> </p>
+<p>
+    <ul>
+        {% if temas %}
+            {%for elTema in temas%}
+                <li>{{elTema|first|lower}}</li>
+            {% endfor %}
+        {% else %}
+            <p>Por favor llene primero la lista de datos</p>
+        {% endif %}
+    </ul>
+</p>
 </body>
 </html>
