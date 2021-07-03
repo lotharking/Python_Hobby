@@ -23,6 +23,14 @@ def saludo(request):
     # documento = doc_externo.render({"nombre_persona":p1.nombre, "apellido":p1.apellido, "fecha": fecha_actual, "temas": temas_curso})
     return render(request, "primeraPlantilla.html",{"nombre_persona":p1.nombre, "apellido":p1.apellido, "fecha": fecha_actual, "temas": temas_curso})
 
+def cursoC(request):
+    fecha_actual = datetime.datetime.now() 
+    return render(request, "cursoC.html", {"fecha": fecha_actual})
+
+def cursoCss(request):
+    fecha_actual = datetime.datetime.now() 
+    return render(request, "cursoCss.html", {"fecha": fecha_actual})
+
 def despedida(request):
     return HttpResponse("Hasta luego")
 
