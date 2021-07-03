@@ -1,7 +1,7 @@
 from django import template
 from django.http import HttpResponse
 import datetime
-from django.template import Template, context
+from django.template import Template, context, loader
 
 class Persona(object):
     def __init__(self, nombre, apellido):
@@ -14,11 +14,12 @@ def saludo(request):
     # apellido = "Velez"
     fecha_actual = datetime.datetime.now() 
     temas_curso = ["Plantillas","Modelos","Formularios","Vistas","Despliegue"]
-    doc_externo = open("C:/Users/ANDRE/OneDrive/Documentos/GIT/Python_Hobby/pythonDjango/Proyecto1/Proyecto1/plantillas/primeraPlantilla.html")
-    plt = Template(doc_externo.read())
-    doc_externo.close()
-    ctx = context.Context({"nombre_persona":p1.nombre, "apellido":p1.apellido, "fecha": fecha_actual, "temas": temas_curso})
-    documento = plt.render(ctx)
+    # doc_externo = open("C:/Users/ANDRE/OneDrive/Documentos/GIT/Python_Hobby/pythonDjango/Proyecto1/Proyecto1/template/primeraPlantilla.html")
+    # plt = Template(doc_externo.read())
+    # doc_externo.close()
+    doc_externo = loader.get_template('primeraPlantilla.html')
+    # ctx = context.Context({"nombre_persona":p1.nombre, "apellido":p1.apellido, "fecha": fecha_actual, "temas": temas_curso})
+    documento = doc_externo.render({"nombre_persona":p1.nombre, "apellido":p1.apellido, "fecha": fecha_actual, "temas": temas_curso})
     return HttpResponse(documento)
 
 def despedida(request):
