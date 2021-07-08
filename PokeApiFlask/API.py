@@ -23,7 +23,7 @@ def obtener_pokemons():
 @app.route('/pokemon/<string:name>',methods=['GET'])
 def obtener_pokemon(name):
     pokemon=cargar_datos(ruta)
-    res=pokemon.loc[pokemon['name']==name]
+    res=pokemon.loc[(pokemon['name']==name)]
     return json.loads(res.to_json(orient='index'))
 
 if __name__=="__main__":
