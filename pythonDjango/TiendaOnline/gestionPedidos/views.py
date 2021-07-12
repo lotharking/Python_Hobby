@@ -1,9 +1,11 @@
+from gestionPedidos.apps import GestionpedidosConfig
 from TiendaOnline.settings import EMAIL_HOST_USER
 from django.db.models import query
 from gestionPedidos.models import Articulos
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.mail import send_mail
+from gestionPedidos.forms import FormularioContacto
 
 # Create your views here.
 
@@ -27,10 +29,27 @@ def buscar(request):
 def contacto(request):
     # implement tab of contact
     if request.method=="POST":
-        asunto=request.POST['asunto']
-        mensaje=request.POST['mensaje'] + " " + request.POST['email']
-        email_from=EMAIL_HOST_USER
-        recipient_list=["andresfelipe083195@hotmail.com"]
-        send_mail(asunto,mensaje,email_from,recipient_list)
-        return render(request,"gracias.html")
-    return render(request, "contacto.html")
+        # """implementacion de formulario con apiforms"""
+        miFromulario=FormularioContacto(request.POST)
+
+        if miFromulario.is_valid():
+
+            infForm=miFromulario.cleaned_data
+
+            send_mail(infForm['asunto'], infForm['mensaje'], infForm.get('email',''),["andresfelipe083195@hotmail.com"],)
+            return render(request,"gracias.html")
+
+            # """implementacion de metodo por peticion directa"""
+            # asunto=request.POST['asunto']
+            # mensaje=request.POST['mensaje'] + " " + request.POST['email']
+            # email_from=EMAIL_HOST_USER
+            # recipient_list=["andresfelipe083195@hotmail.com"]
+            # send_mail(asunto,mensaje,email_from,recipient_list)
+
+    else:
+        miFromulario=FormularioContacto()
+    
+    return render(request, "formulario_contacto.html", {"form": miFromulario})
+
+
+    # return render(request, "contacto.html")
