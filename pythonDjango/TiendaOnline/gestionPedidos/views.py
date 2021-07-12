@@ -1,7 +1,9 @@
+from TiendaOnline.settings import EMAIL_HOST_USER
 from django.db.models import query
 from gestionPedidos.models import Articulos
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -25,5 +27,10 @@ def buscar(request):
 def contacto(request):
     # implement tab of contact
     if request.method=="POST":
+        asunto=request.POST['asunto']
+        mensaje=request.POST['mensaje'] + " " + request.POST['email']
+        email_from=EMAIL_HOST_USER
+        recipient_list=["andresfelipe083195@hotmail.com"]
+        send_mail(asunto,mensaje,email_from,recipient_list)
         return render(request,"gracias.html")
     return render(request, "contacto.html")
