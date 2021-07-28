@@ -3,6 +3,7 @@ from django.db.models.base import Model
 
 # Create your models here.
 
+# Campos para la base usando mapeo ORM (cada objeto es un campo en la DB)
 class Servicio(models.Model):
     titulo = models.CharField(max_length=50)
     contenido = models.CharField(max_length=50)
