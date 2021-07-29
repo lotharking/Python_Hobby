@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ic)y0v&ztdu7h&p(3h976s_jc)=vpag&&s-fjah$$g&9l!u8so'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production! this only in development
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -120,7 +120,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# archivos multimedia son staticos para modo desarrollo
 STATIC_URL = '/static/'
+
+# path to save images
+MEDIA_URL='/media/'
+
+# route to access to path in django
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
