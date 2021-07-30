@@ -7,7 +7,7 @@ from django.db.models.base import Model
 class Servicio(models.Model):
     titulo = models.CharField(max_length=50)
     contenido = models.CharField(max_length=50)
-    imagen = models.ImageField()
+    imagen = models.ImageField(upload_to='servicios') #upload_to--> indica la sub carpeta para guardar imagenes
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
 
