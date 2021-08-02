@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'ProyectoWebApp',
     'servicios',
     'blog',
+    'contacto',
+    'tienda',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# config to send of email parameters config
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'andresfelipe083195@gmail.com' # Email desde donde se va a enviar
+EMAIL_HOST_PASSWORD = 'Cristovive3712'
