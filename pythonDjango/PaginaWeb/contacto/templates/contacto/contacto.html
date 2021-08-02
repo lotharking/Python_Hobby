@@ -2,6 +2,10 @@
 
 {% block content %}
 <div class="contenedorFormulario">
+    
+    {% if "valido" in request.GET %}
+        <p style="color: white;">Enviado correctamente</p>
+    {% endif %}
     <form action="" method="POST">
         <!-- csrf_token -- Implementa una clave csrf de formularios que impide que el formulario
              pueda ser rellenado por una pagina de terceros -->
