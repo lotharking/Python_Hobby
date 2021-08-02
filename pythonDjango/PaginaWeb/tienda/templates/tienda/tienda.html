@@ -1,5 +1,24 @@
 {% extends "ProyectoWebApp/base.html" %}
 
 {% block content %}
-<div><p style="color: white;">Tienda</p></div>
+<!-- Contenedor general para las tarjetas -->
+<div class="container">
+    <!-- contenedor para las dilas -->
+    <div class="row">
+        {% for producto in productos %}
+            <!-- contenedor para las columnas -->
+            <div class="col-md-3">
+                <!-- creacion de las tarjetas -->
+                <div class="card" style="margin: 5px 5px;">
+                    <img src="{{producto.imagen.url}}" class="card-img-top">
+                    <div class="card-body" style="text-align: center;">
+                        <h7 class="card-title">{{producto.nombre}}</h7>
+                        <p class="card-text">$&nbsp;{{producto.precio}}</p>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
