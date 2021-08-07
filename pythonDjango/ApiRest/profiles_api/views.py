@@ -3,7 +3,7 @@ from django.http import response
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, filters
 from rest_framework.authentication import TokenAuthentication # Genera token ramdom para autenticacion
 
 from profiles_api import serializers, models, permissions
@@ -113,3 +113,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all() # Llama a los objetos y evita definir nombre en el url
     authentication_classes = (TokenAuthentication, ) # Como el usuario se autentica
     permission_classes = (permissions.UpdateOwnProfile, ) # Que permisos tiene el usuario
+    filter_backends = (filters.SearchFilter, ) # Filtros de busquedade usuarios
+    search_fields = ('name', 'email',) # Como se quiere buscar
