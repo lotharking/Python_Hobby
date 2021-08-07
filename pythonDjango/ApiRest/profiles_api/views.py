@@ -4,8 +4,9 @@ from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
+from rest_framework.authentication import TokenAuthentication # Genera token ramdom para autenticacion
 
-from profiles_api import serializers, models
+from profiles_api import serializers, models, permissions
 
 class HelloApiView(APIView):
     """ Clase APIView prueba con sus tipos de metodos existentes para API's
@@ -110,3 +111,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.objects.all() # Llama a los objetos y evita definir nombre en el url
+    authentication_classes = (TokenAuthentication, ) # Como el usuario se autentica
+    permission_classes = (permissions.UpdateOwnProfile, ) # Que permisos tiene el usuario
