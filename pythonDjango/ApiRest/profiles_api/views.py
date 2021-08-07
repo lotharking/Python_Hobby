@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 
-from profiles_api import serializers
+from profiles_api import serializers, models
 
 class HelloApiView(APIView):
     """ Clase APIView prueba con sus tipos de metodos existentes para API's
@@ -104,3 +104,9 @@ class HelloViewSet(viewsets.ViewSet):
         """ Destruye un objeto """
 
         return Response({'http_method': 'DELETE'})
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """ Crear y actualizar perfiles """
+
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all() # Llama a los objetos y evita definir nombre en el url
