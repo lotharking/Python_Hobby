@@ -1,6 +1,7 @@
 """ Se usa para convertir informacion json, a traves de el se agrega el input, post, update, etc. 
 Para poder recibir el contenido que se esta posteando al api """
 
+from django.db.models import fields
 from rest_framework import serializers
 
 from profiles_api import models
@@ -39,3 +40,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         
         return super().update(instance, validated_data)
+
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    """ Serializador de ProfileFeedItem """
+
+    class Meta:
+        model = models.ProfileFeedItemm # Para que trabaje con el modelo ProfileFeedItemm para recibir la informacion
+        fields = ('id', 'user_profile', 'status_text', 'create_on')
+        extra_kwargs = {'user_profile': {'read_only': True}}
