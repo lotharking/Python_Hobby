@@ -6,6 +6,7 @@ from rest_framework import status, viewsets, filters
 from rest_framework.authentication import TokenAuthentication # Genera token ramdom para autenticacion
 from rest_framework.authtoken.views import ObtainAuthToken 
 from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 from profiles_api import serializers, models, permissions
 
@@ -120,3 +121,17 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class UserLoginApiView(ObtainAuthToken):
     """ Se encargara de crear los tokens de autenticacion del usuario """
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES # Agrega las clases de renderer al token de autenticacion
+
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    """ Maneja el crear, leer y actualizar el profile feed """
+    authentication_classes = (TokenAuthentication, )
+    serializer_class = serializers.ProfileFeedItemSerializer
+    queryset = models.ProfileFeedItemm.objects.all() # Ordenar todos los items que contenga
+    permission_classes = (
+        permissions.UpdateOwnStatus, 
+        IsAuthenticated # IsAuthenticatedOrReadOnly -> usuarios no autenticados pueden leer el api, IsAuthenticated -> solo autenticados
+        ) # Agregamos nuestros permisos personalizados
+
+    def perform_create(self, serializer):
+        """ Se encarga de setear el perfil de usuario para el usuario que esta loggeado """
+        serializer.save(user_profile=self.request.user)

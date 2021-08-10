@@ -12,4 +12,14 @@ class UpdateOwnProfile(permissions.BasePermission):
 
         """ Valida si el objeto a editar tiene match con el que se esta autenticado """
         return obj.id == request.user.id
-        # return super().has_object_permission(request, view, obj)
+        
+class UpdateOwnStatus(permissions.BasePermission):
+    """ Permite que el usuario actualice su propio perfil o status """
+
+    def has_object_permission(self, request, view, obj):
+        """ Chequear si el usuario esta editando su propio perfil """
+
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        
+        return obj.user_profile_id == request.user.id
