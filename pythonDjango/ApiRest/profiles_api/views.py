@@ -1,10 +1,11 @@
-import re
 from django.http import response
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets, filters
 from rest_framework.authentication import TokenAuthentication # Genera token ramdom para autenticacion
+from rest_framework.authtoken.views import ObtainAuthToken 
+from rest_framework.settings import api_settings
 
 from profiles_api import serializers, models, permissions
 
@@ -115,3 +116,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnProfile, ) # Que permisos tiene el usuario
     filter_backends = (filters.SearchFilter, ) # Filtros de busquedade usuarios
     search_fields = ('name', 'email',) # Como se quiere buscar
+
+class UserLoginApiView(ObtainAuthToken):
+    """ Se encargara de crear los tokens de autenticacion del usuario """
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES # Agrega las clases de renderer al token de autenticacion
