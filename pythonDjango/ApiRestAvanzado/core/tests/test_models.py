@@ -16,3 +16,10 @@ class ModelTest(TestCase):
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
+
+    def test_new_user__email_normalized(self):
+        """ Verifica que el email fue normalizado """
+        email = 'test@ANDRES.com'
+        user = get_user_model().objects.create_user(email, 'Testpass123')
+
+        self.assertEqual(user.email,email.lower()) # email.lower se encarga de normalizar y poner en minuscula
