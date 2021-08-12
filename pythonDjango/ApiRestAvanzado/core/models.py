@@ -11,6 +11,10 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None,**extra_fields):
         """ Crea y guarda un nuevo usuario:
         extra_fields -> si se le pasa algun otro campo este argumento lo recibe """
+
+        if not email:
+            raise ValueError('Users must have an email')
+
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password) # guardar la contraseña con un hasch
         user.save(using=self._db)

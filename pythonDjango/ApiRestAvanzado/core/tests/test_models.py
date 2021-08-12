@@ -23,3 +23,8 @@ class ModelTest(TestCase):
         user = get_user_model().objects.create_user(email, 'Testpass123')
 
         self.assertEqual(user.email,email.lower()) # email.lower se encarga de normalizar y poner en minuscula
+
+    def test_new_user_invalid_email(self):
+        """ Cuando nuevo usuario da un email invalido """
+        with self.assertRaises(ValueError):
+            user = get_user_model().objects.create_user(None, 'Testpass123')
