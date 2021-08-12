@@ -17,9 +17,18 @@ class UserManager(BaseUserManager):
 
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password) # guardar la contraseña con un hasch
-        user.save(using=self._db)
+        user.save(using=self._db) # guarda el usuario
         
         return user
+
+    def create_superuser(self, email, password):
+        """ Crear super usuario """
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """ Modelo personalizado de usuario que soporta hacer loggin con email en lugar del usuario """

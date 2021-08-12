@@ -28,3 +28,16 @@ class ModelTest(TestCase):
         """ Cuando nuevo usuario da un email invalido """
         with self.assertRaises(ValueError):
             user = get_user_model().objects.create_user(None, 'Testpass123')
+
+    def test_create_new_superuser(self):
+        """ Probar super usuario creado """
+        
+        email = 'test@andres.com'
+        password = 'Testpass123'
+        user = get_user_model().objects.create_superuser(
+            email = email,
+            password = password
+        )
+
+        self.assertTrue(user.is_superuser) # is_superuser se agrega con permissionsmix
+        self.assertTrue(user.is_staff)
