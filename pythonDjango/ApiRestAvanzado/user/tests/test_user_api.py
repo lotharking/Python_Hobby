@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 from rest_framework import status # Ayudan a poner los mensajes de error como se conocen con 200-400-500
 
 CREATE_USER_URL = reverse('user:create')
+TOKEN_URL = reverse('user:token')
 
 def create_user(**params): # Para pasarle la cantidad de argumentos que se desee
     return get_user_model().objects.create_user(**params)
@@ -39,7 +40,8 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
         """ probar crear un usuario que ya existe y falla """
         payload = {
             'email': 'test@test.com',
-            'password': 'testpassword'
+            'password': 'testpassword',
+            'name': 'Test name'
         }
         create_user(**payload)
 
@@ -51,7 +53,8 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
         """ Validar que la contraseña no es muy corta """
         payload = {
             'email': 'test@test.com',
-            'password': 'pw'
+            'password': 'pw',
+            'name': 'Test name'
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
@@ -63,3 +66,19 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
 
         self.assertFalse(user_exist)
 
+    def test_create_token_for_user(self):
+        """ Se prueba que el token se cree para el usuario """
+        payload = {
+            'email': 'test@test.com',
+            'password': 'pw',
+            'name': 'Test name'
+        }
+        create_user(**payload)
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertIn('token', res.data) # Se valida que el token existe
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_token_invalid_credentials(self):
+        """ Probar que el test no es creado con credenciales invalidas """
+        
