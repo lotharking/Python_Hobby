@@ -36,7 +36,7 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
         self.assertNotIn('password', res.data) # Asegurarse que nos e pase la contraseña
 
     def test_user_exist(self):
-        -""" probar crear un usuario que ya existe y falla """
+        """ probar crear un usuario que ya existe y falla """
         payload = {
             'email': 'test@test.com',
             'password': 'testpassword'
