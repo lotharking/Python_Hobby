@@ -81,4 +81,15 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
 
     def test_token_invalid_credentials(self):
         """ Probar que el test no es creado con credenciales invalidas """
+
+        create_user(email='user@test.com', password='testpass')
+        payload = {
+            'email': 'user@test.com',
+            'password': 'wrong'
+        }
+
+        res = self.client.post(TOKEN_URL, payload)
         
+        self.assertIn('token', res.data) # Se valida que el token existe
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
