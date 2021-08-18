@@ -90,7 +90,7 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
 
         res = self.client.post(TOKEN_URL, payload)
 
-        self.assertIn('token', res.data) # Se valida que el token existe
+        self.assertNotIn('token', res.data) # Se valida si el token no existe
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_token_no_user(self):
@@ -101,10 +101,12 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
             'name': 'Test name'
         }
         res = self.client.post(TOKEN_URL, payload)
+        self.assertNotIn('token', res.data) # Se valida si el token no existe
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_token_missing_field(self):
         """ Probar que el email y contraseña sean requeridos """
         res = self.client.post(TOKEN_URL, {'email': 'one', 'password': ''})
+        self.assertNotIn('token', res.data) # Se valida si el token no existe
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
