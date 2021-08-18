@@ -9,3 +9,7 @@
 ## App core:
 -se usara para guardar solamente los modelos
 -se crea el folder test para manejar todos los test a partir de __init__.py
+
+## App User:
+- se desarrollara todo lo referente a la creacion y manipulacion de usuarios
+- Se manejara el uso de token temporales para el manejo de los usuarios
