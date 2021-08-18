@@ -8,6 +8,7 @@ from rest_framework import status # Ayudan a poner los mensajes de error como se
 
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
+ME_URL = reverse('user:me')
 
 def create_user(**params): # Para pasarle la cantidad de argumentos que se desee
     return get_user_model().objects.create_user(**params)
@@ -97,8 +98,7 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
         """ Probar que no se crea un token si no existe un usuarios """
         payload = {
             'email': 'test@test.com',
-            'password': 'pw',
-            'name': 'Test name'
+            'password': 'testpass'
         }
         res = self.client.post(TOKEN_URL, payload)
         self.assertNotIn('token', res.data) # Se valida si el token no existe
@@ -110,3 +110,45 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
         self.assertNotIn('token', res.data) # Se valida si el token no existe
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_retrieve_url_user_unauthorized(self):
+        """ Prueba que la autenticacion sea requerida para los usuarios """
+        res = self.client.get(ME_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+class PrivateUserApiTest(TestCase):
+    """ Testear el api para usuarios privados o autenticados """
+
+    def setUp(self):
+        """ Primera funcion para definir el APIClient"""
+        self.user = create_user(
+            email = 'test@test.com',
+            password = 'testpassword',
+            name='name'
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user) # Autenticar al cliente
+
+    def test_retrieve_profile_success(self):
+        """ Probar obtener perfil para el usuario con login """
+        res = self.client.get(ME_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, { # no se valida la contraseña por tema de seguridad
+            'name': self.user.name,
+            'email': self.user.email
+        })
+    
+    def test_post_me_not_allowed(self):
+        """ Prueba que el POST no sea permitido """
+        res= self.client.post(ME_URL,{})
+        self.assertEqual(res.status_code,status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_update_user_profile(self):
+        """ Probar que el usuario esta siendo actualizado si esta autenticado """
+        payload = {'name': 'new name','password': 'newpass1234'}
+
+        res = self.client.patch(ME_URL,payload)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.name,payload['name'])
+        self.assertTrue(self.user.check_password(payload['password']))
+        self.assertEqual(res.status_code,status.HTTP_200_OK)
