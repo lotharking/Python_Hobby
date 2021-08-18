@@ -102,3 +102,9 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
         }
         res = self.client.post(TOKEN_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_token_missing_field(self):
+        """ Probar que el email y contraseña sean requeridos """
+        res = self.client.post(TOKEN_URL, {'email': 'one', 'password': ''})
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
