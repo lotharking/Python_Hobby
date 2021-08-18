@@ -1,4 +1,3 @@
-from _typeshed import Self
 from django.forms.fields import EmailField
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
@@ -16,7 +15,7 @@ class PublicUserApiTest(TestCase): # Test publicos(se separa el tipo de usuarios
     """ Testear el api para usuarios publicos """
     def setUp(self):        
         """ Primera funcion para definir el APIClient"""
-        Self.client = APIClient()
+        self.client = APIClient()
 
     def test_create_valid_user_success(self):
         """ Probar crear usuario con un payload exitoso """
