@@ -1,6 +1,10 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+def sample_user(email='test@dtest.com', password='testpass'):
+    """ Creacion de usuario de ejemplo """
+    return get_user_model().objects.create_user(email,password)
+
 class ModelTest(TestCase):
     """ Va a probar que la funcion helper del modelo pueda crear un nuevo usuario """
 
