@@ -48,3 +48,19 @@ class PrivateTagsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+    def test_tags_limited_to_user(self):
+        """ Probar que los tags retornados sean del usuario """
+        user2 = create_user(
+            email = 'otro@test.com',
+            password = 'testpass'
+        )
+        Tag.objects.create(user=user2,name='Raspberry')
+        tag = Tag.objects.create(user=self.user, name= 'Comfort foot')
+
+        res = self.client.get(TAG_URL)
+
+        self.assertEqual(res.status_code,status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0], tag.name)
+        
