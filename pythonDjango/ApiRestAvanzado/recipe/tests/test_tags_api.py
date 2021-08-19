@@ -31,9 +31,20 @@ class PrivateTagsApiTests(TestCase):
     def setUp(self):
         self.user = create_user(
             email = 'test@test.com',
-            password = 'testpassword',
-            name='name'
+            password = 'testpassword'
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user) # Autenticar al cliente
 
+    def test_retrieve_tags(self):
+        """ Probar obtener tags """
+        Tag.objects.create(user=self.user,name='Meat')
+        Tag.objects.create(user=self.user,name='Banana')
+
+        res = self.client.get(TAG_URL)
+
+        tags = Tag.objects.all().order_by('-name')
+        serializer = TagSerializer(tags, many=True)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
