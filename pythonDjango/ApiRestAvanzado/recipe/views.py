@@ -12,3 +12,7 @@ class TagViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     permission_classes = (IsAuthenticated, )
     queryset = Tag.objects.all()
     serializer_class = serializers.TagSerializer
+
+    def get_queryset(self):
+        """ Retornar objetos para el usuario autorizado """
+        return self.queryset.filter(user = self.request.user).order_by('-name')
