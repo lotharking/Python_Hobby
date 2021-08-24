@@ -29,8 +29,8 @@ class PublicRecipeApiTest(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = create_user(
-            'test@test.com',
-            'testpass'
+            email ='test@test.com',
+            password ='testpass'
         )
         self.client.force_authenticate(self.user)
 
@@ -41,7 +41,7 @@ class PublicRecipeApiTest(TestCase):
 
         res= self.client.get(RECIPE_URL)
 
-        recipes = Recipe.objects.all().order_by('-id')
+        recipes = Recipe.objects.all().order_by('id')
         serializer = RecipeSerializer(recipes, many = True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -50,7 +50,7 @@ class PublicRecipeApiTest(TestCase):
     def test_recipes_limited_to_user(self):
         """ Obtener la receta para un usuario """
         user2 = create_user(
-            email = 'otro@test.com',
+            email ='otro@test.com',
             password = 'testpass'
         )
         Sample_recipe(user=user2)
@@ -58,7 +58,7 @@ class PublicRecipeApiTest(TestCase):
 
         res=self.client.get(RECIPE_URL)
 
-        recipes = Recipe.objects.all().order_by('-id')
+        recipes = Recipe.objects.filter(user=self.user)
         serializer = RecipeSerializer(recipes, many = True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
