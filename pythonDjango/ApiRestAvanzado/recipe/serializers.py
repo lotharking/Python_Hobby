@@ -18,7 +18,17 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     """ Serializador para objeto de Recetas """
+    ingredients =serializers.PrimaryKeyRelatedField( # Se emplea de esta manera debido a que se maneja un manytomany en el modelo
+        many=True, # Es un campo many
+        queryset = Ingredient.objects.all()
+    )
+
+    tags =serializers.PrimaryKeyRelatedField( # Se emplea de esta manera debido a que se maneja un manytomany en el modelo
+        many=True, # Es un campo many
+        queryset = Tag.objects.all()
+    )
+
     class Meta:
         model = Recipe
-        fields = ('id', 'title')
+        fields = ('id', 'title', 'ingredients', 'tags', 'time_minutes', 'price', 'link')
         read_only_Fields = ('id',)
