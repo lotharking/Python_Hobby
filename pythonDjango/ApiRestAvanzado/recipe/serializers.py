@@ -37,3 +37,13 @@ class RecipeDetailSerializer(RecipeSerializer):
     """ Serializador para ver detalles de una receta """
     ingredients =IngredientSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
+
+
+class RecipeImageSerializer(serializers.ModelSerializer):
+    """ Serializa imagenes """
+    class Meta:
+        model = Recipe
+        fields = ('id', 'image')
+        read_only_Fields = ('id',)
+        
+        
