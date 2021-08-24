@@ -41,6 +41,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """ Retornar objetos para el usuario autorizado """
         return self.queryset.filter(user = self.request.user)
 
-    def perform_create(self, serializer):
-        """ Crear nuevo Tag """
-        serializer.save(user=self.request.user)
+    def get_serializer_class(self):
+        """ Retorna clase de serializador adecuado """
+        if self.action == 'retrieve':
+            return serializers.RecipeDetailSerializer
+        return self.serializer_class

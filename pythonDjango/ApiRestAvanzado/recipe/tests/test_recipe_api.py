@@ -5,9 +5,9 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Recipe
+from core.models import Recipe, Tag, Ingredient
 
-from recipe.serializers import RecipeSerializer
+from recipe.serializers import RecipeSerializer, RecipeDetailSerializer
 
 RECIPE_URL = reverse('recipe:recipe-list')
 
@@ -23,6 +23,18 @@ def Sample_recipe(user, **params):
     }
     defaults.update(params)
     return Recipe.objects.create(user=user, **defaults)
+
+def Sample_tag(user, name='Main course'): 
+    """ Crear tag ejemplo """
+    return Tag.objects.create(user=user, name=name)
+
+def Sample_ingredient(user, name='Cinnamon'): 
+    """ Crear ingrediente ejemplo """
+    return Ingredient.objects.create(user=user, name=name)
+
+def detail_url(recipe_id):
+    """ Retorna receta detail url"""
+    return reverse('recipe:recipe-detail', args=[recipe_id])
 
 class PublicRecipeApiTest(TestCase):
     """ Test acceso no autenticado al api """
@@ -64,6 +76,18 @@ class PublicRecipeApiTest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data),1)
         self.assertEqual(res.data, serializer.data)
+
+    def test_view_recipe_detail(self):
+        """ Prueba ver los detalles de una receta """
+        recipe= Sample_recipe(user=self.user)
+        recipe.tags.add(Sample_tag(user=self.user))
+        recipe.ingredients.add(Sample_ingredient(user=self.user))
+
+        url = detail_url(recipe.id)
+        res=self.client.get(url)
+
+        serializer = RecipeDetailSerializer(recipe)
+        self.assertEqual(res.data,serializer.data)
 
 
 
