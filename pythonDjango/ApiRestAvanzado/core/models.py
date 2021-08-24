@@ -5,7 +5,19 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
     BaseUserManager -> creamos el manager de ese usuario creado
     PermissionsMixin -> dandole permisos al usuario
     """
+import uuid
+import os
+
 from django.conf import settings
+
+
+def recipe_image_file_path(instance, filename):
+    """ Genera path para las imagenes """
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+
+    return os.path.join('upload/recipe/', filename)
+
 
 class UserManager(BaseUserManager):
     """ Clase que indicara el manejo que se le da al usuario """
@@ -71,6 +83,7 @@ class Recipe(models.Model) :
         on_delete=models.CASCADE
     )
     title= models.CharField(max_length=255)
+    image = models.ImageField(null=True, upload_to=recipe_image_file_path)
     time_minutes= models.IntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
     link = models.CharField(max_length=255, blank= True)
