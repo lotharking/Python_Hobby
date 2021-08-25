@@ -78,3 +78,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+    def _params_to_ints(self, qs):
+        """ Convertir lista de strings IDs a lista de enteros """
+        return [int(str_id) for str_id in qs.split(',')]
+
+    def get_queryset(self):
+        """ Obtener recetas para el usuario autenticado """
+        tags = self.request.query_params.get('tags')
+        ingredients = self.request.query_params.get('ingredients')
+        queryset = self.queryset
+        if tags:
+            tags_id = self._params_to_ints(tags)
+            queryset = queryset.filter(tags__id__in=tags_id)
+        if ingredients:
+            ingredients_id = self._params_to_ints(ingredients)
+            queryset = queryset.filter(ingredients__id__in=ingredients_id)
+
+        return queryset.filter(user=self.request.user)
