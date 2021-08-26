@@ -20,4 +20,6 @@ from platzigram import view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello-word/', view.hello_word),
+    path('sorted/', view.sorted),
+    path('hi/<str:name>/<int:age>/', view.say_hi),
 ]
