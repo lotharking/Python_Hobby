@@ -13,3 +13,6 @@
 ## App User:
 - se desarrollara todo lo referente a la creacion y manipulacion de usuarios
 - Se manejara el uso de token temporales para el manejo de los usuarios
+
+## App Recipe
+- Se manejan pruebas, modelos y vistas de tags, ingredientes y recetas.
