@@ -7,3 +7,6 @@
 
 ### PlatziGram:
 - Hola mundo en django
+- Manejo de vistas y templates
+- Uso de json object in templates
+- Patrones de diseño (Solucion reutilizable a problema comun)
