@@ -46,7 +46,7 @@ class ProfileAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'modified')
 
 class ProfileInline(admin.StackedInline):
-    """Profile admin in.line for user"""
+    """Profile admin in-line for user"""
 
     model = Profile
     can_delete = False
