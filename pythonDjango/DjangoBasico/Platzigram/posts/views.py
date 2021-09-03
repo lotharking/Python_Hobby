@@ -40,13 +40,4 @@ posts= [
 @login_required
 def list_posts(request):
     """ List existing post """
-    # content=[]
-    # for post in posts:
-    #     content.append(
-    #         """
-    #             <p><strong>{name}</strong></p>
-    #             <p><small>{user} - <i>{timestamp}</i></small></p>
-    #             <figure><img src="{picture}"/></figure>
-    #         """.format(**post)
-    #     )
     return render(request, 'posts/feed.html', {'posts': posts})
