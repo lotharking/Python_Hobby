@@ -59,7 +59,6 @@ def login_view(request):
         return render(request, 'users/login.html', {'error':'Invalid username or password'})
     return render(request, 'users/login.html')
 
-
 def signup(request):
     """signup view"""
     if request.method == 'POST':
