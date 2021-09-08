@@ -60,19 +60,19 @@ def login_view(request):
     return render(request, 'users/login.html')
 
 
-def singup(request):
-    """singup view"""
+def signup(request):
+    """signup view"""
     if request.method == 'POST':
         username = request.POST['username']
         passwd = request.POST['passwd']
         passwd_confirmation = request.POST['passwd_confirmation']
         if passwd != passwd_confirmation:
-            return render(request, 'users/singup.html', {'error':'Password confirmation does not match'})
+            return render(request, 'users/signup.html', {'error':'Password confirmation does not match'})
 
         try:
             user = User.objects.create_user(username=username, password = passwd)
         except IntegrityError:
-            return render(request, 'users/singup.html', {'error': 'Username is alredy in user'})
+            return render(request, 'users/signup.html', {'error': 'Username is alredy in user'})
         user.first_name = request.POST['first_name']
         user.last_name = request.POST['last_name']
         user.email = request.POST['email']
@@ -83,7 +83,7 @@ def singup(request):
 
         return redirect('login')
 
-    return render(request, 'users/singup.html')
+    return render(request, 'users/signup.html')
 
 @login_required
 def logout_view(request):
