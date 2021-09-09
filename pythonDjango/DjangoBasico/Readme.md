@@ -10,3 +10,8 @@
 - Manejo de vistas y templates
 - Uso de json object in templates
 - Patrones de diseño (Solucion reutilizable a problema comun)
+
+
+## Definiciones
+### Class-based views
+- Esto permite estructurar el codigo y reusarlo usando la herencia y mixins
