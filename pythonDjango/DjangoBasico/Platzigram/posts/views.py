@@ -18,14 +18,14 @@ def list_posts(request):
     return render(request, 'posts/feed.html', {'posts': posts})
 
 @login_required
-def create_post(request):
+def create(request):
     """Create new post view"""
 
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('feed')
+            return redirect('posts:feed')
     else:
         form = PostForm()
 
