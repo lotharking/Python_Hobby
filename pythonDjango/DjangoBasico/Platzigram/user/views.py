@@ -9,6 +9,7 @@ from django.views.generic import DetailView
 
 # Models
 from django.contrib.auth.models import User
+from posts.models import Posts
 
 # Forms
 from user.forms import ProfileForm, SignupForm
@@ -20,6 +21,14 @@ class UserDetailView(DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'slug'
     queryset = User.objects.all()
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        """Add users posts to context"""
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()
+        context['posts'] = Posts.objects.filter(user=user).order_by('-created')
+        return context
 
 @login_required
 def update_profile(request):
