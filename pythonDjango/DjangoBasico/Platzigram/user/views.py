@@ -3,6 +3,7 @@
 # Django
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import DetailView
@@ -14,7 +15,7 @@ from posts.models import Posts
 # Forms
 from user.forms import ProfileForm, SignupForm
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     """User detail view"""
 
     template_name = 'users/detail.html'
