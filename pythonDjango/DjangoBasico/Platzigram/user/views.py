@@ -4,9 +4,22 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views.generic import DetailView
+
+# Models
+from django.contrib.auth.models import User
 
 # Forms
 from user.forms import ProfileForm, SignupForm
+
+class UserDetailView(DetailView):
+    """User detail view"""
+
+    template_name = 'users/detail.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'slug'
+    queryset = User.objects.all()
 
 @login_required
 def update_profile(request):
@@ -22,7 +35,9 @@ def update_profile(request):
             profile.biography = data['biography']
             profile.picture = data['picture']
             profile.save()
-            return redirect('users:update_profile')
+
+            url = reverse('users:detail', kwargs={'slug': request.user.username})
+            return redirect(url)
     else:
         form = ProfileForm()
 
