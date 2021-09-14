@@ -21,14 +21,14 @@ class PostsFeedView(LoginRequiredMixin, ListView):
     paginate_by = 2
     context_object_name = 'posts'
 
-# class DetailFeedView(LoginRequiredMixin, DetailView):
-#     """DetailView of posts"""
+class PostDetailView(LoginRequiredMixin, DetailView):
+    """DetailView of posts"""
 
-#     template_name = 'users/detail.html'
-#     slug_field = 'username'
-#     slug_url_kwarg = 'slug'
-#     queryset = User.objects.all()
-#     context_object_name = 'user'
+    template_name = 'posts/detail.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'detailPost'
+    queryset = Posts.objects.all()
+    context_object_name = 'post'
 
 @login_required
 def create(request):
