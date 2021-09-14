@@ -25,10 +25,15 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     """DetailView of posts"""
 
     template_name = 'posts/detail.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'detailPost'
     queryset = Posts.objects.all()
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        """Add users posts to context"""
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()
+        context['posts'] = Posts.objects.filter(user=user).order_by('-created')
+        return context
 
 @login_required
 def create(request):
