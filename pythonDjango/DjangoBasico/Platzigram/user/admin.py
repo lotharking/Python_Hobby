@@ -12,7 +12,7 @@ from user.models import Profile
 class ProfileAdmin(admin.ModelAdmin):
     """ Profile admin """
 
-    list_display = ('pk','user','phone_number','website', 'picture')
+    list_display = ('pk','user','phone_number','website', 'picture', 'posts_count')
     list_display_links = ('pk','user')
     list_editable = ('phone_number', 'website', 'picture')
     search_fields = (
@@ -32,7 +32,8 @@ class ProfileAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Profile', {
-            'fields':(('user', 'picture'),),
+            'fields':(('user', 'picture'),
+                    ('posts_count'),),
         }),
         ('Extra info', {
             'fields':(('website', 'phone_number'),
