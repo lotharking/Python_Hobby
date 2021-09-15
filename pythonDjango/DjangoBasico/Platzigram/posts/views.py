@@ -1,7 +1,6 @@
 """ Posts views """
 
 # Django
-from user.models import Profile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -13,6 +12,8 @@ from posts.forms import PostForm
 
 # Models
 from posts.models import Posts
+from django.contrib.auth.models import User
+from user.models import Profile
 
 class PostsFeedView(LoginRequiredMixin, ListView):
     """Return all publish posts"""
@@ -35,13 +36,18 @@ class CreatePostView(CreateView):
 
     template_name = 'posts/new.html'
     form_class = PostForm
-    model = Profile
     success_url = reverse_lazy('posts:feed')
+
+    def form_valid(self, form):
+        form.save()
+        count = Profile.objects.get(user=self.request.user)
+        count.posts_count += 1
+        count.save()
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
         context['profile'] = self.request.user.profile
-        context['profile'].posts_count = context['profile'].posts_count + 1
         return context
 
