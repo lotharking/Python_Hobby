@@ -38,6 +38,7 @@ class CreatePostView(CreateView):
     success_url = reverse_lazy('posts:feed')
 
     def form_valid(self, form):
+        """Form validate"""
         form.save()
         update_count = Profile.objects.get(user=self.request.user)
         update_count.posts_count = Posts.objects.filter(user=self.request.user).count()
@@ -45,6 +46,7 @@ class CreatePostView(CreateView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
+        """Update the post context"""
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
         context['profile'] = self.request.user.profile
