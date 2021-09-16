@@ -26,3 +26,10 @@ class Profile(models.Model):
     def __str__(self):
         """return username """
         return self.user.username
+
+class Followers(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    another_user = models.ManyToManyField(User, related_name='another_user')
+
+    def __str__(self):
+        return self.user.name

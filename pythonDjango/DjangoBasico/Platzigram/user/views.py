@@ -1,11 +1,8 @@
 """Users view"""
 
 # Django
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_view
-from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, FormView, UpdateView
 
@@ -31,6 +28,9 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user = self.get_object()
         context['posts'] = Posts.objects.filter(user=user).order_by('-created')
+        update_count = Profile.objects.get(user=self.request.user)
+        update_count.posts_count = context['posts'].count()
+        update_count.save()
         return context
 
 class SignupView(FormView):

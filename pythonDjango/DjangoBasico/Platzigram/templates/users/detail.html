@@ -24,7 +24,7 @@
                         </a>
                     {% else %}
                         <a
-                            href=""
+                            href="{% url "users:detail" user.username %}"
                             class="ml-5 btn btn-sm btn-primary"
                         >
                             Follow

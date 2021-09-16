@@ -1,7 +1,7 @@
 """ Posts views """
 
 # Django
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,7 +12,6 @@ from posts.forms import PostForm
 
 # Models
 from posts.models import Posts
-from django.contrib.auth.models import User
 from user.models import Profile
 
 class PostsFeedView(LoginRequiredMixin, ListView):
@@ -40,9 +39,9 @@ class CreatePostView(CreateView):
 
     def form_valid(self, form):
         form.save()
-        count = Profile.objects.get(user=self.request.user)
-        count.posts_count += 1
-        count.save()
+        update_count = Profile.objects.get(user=self.request.user)
+        update_count.posts_count = Posts.objects.filter(user=self.request.user).count()
+        update_count.save()
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
