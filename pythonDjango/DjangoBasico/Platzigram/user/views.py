@@ -8,7 +8,7 @@ from django.views.generic import DetailView, FormView, UpdateView
 
 # Models
 from django.contrib.auth.models import User
-from user.models import Profile
+from user.models import Followers, Profile
 from posts.models import Posts
 
 # Forms
@@ -28,8 +28,11 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user = self.get_object()
         context['posts'] = Posts.objects.filter(user=user).order_by('-created')
-        update_count = Profile.objects.get(user=self.request.user)
+        context['followers'] = Followers.objects.filter(user=user)
+        print(context['followers'].user)
+        update_count = Profile.objects.get(user=user)
         update_count.posts_count = context['posts'].count()
+        update_count.followers = Followers.objects.filter(user=user).count()
         update_count.save()
         return context
 
