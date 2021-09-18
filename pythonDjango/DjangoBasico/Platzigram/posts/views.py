@@ -1,8 +1,6 @@
 """ Posts views """
 
 # Django
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView
@@ -12,7 +10,7 @@ from posts.forms import PostForm
 
 # Models
 from posts.models import Posts
-from user.models import Profile
+from user.models import Followers, Profile
 
 class PostsFeedView(LoginRequiredMixin, ListView):
     """Return all publish posts"""

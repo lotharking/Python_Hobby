@@ -31,5 +31,8 @@ class Followers(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     another_user = models.ManyToManyField(User, related_name='another_user')
 
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
     def __str__(self):
-        return self.user.name
+        return self.user.username
