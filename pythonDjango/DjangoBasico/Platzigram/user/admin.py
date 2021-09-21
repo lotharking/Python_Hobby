@@ -6,15 +6,15 @@ from django.contrib import admin
 
 # Models
 from django.contrib.auth.models import User
-from user.models import Profile
+from user.models import Followers, Profile
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     """ Profile admin """
 
-    list_display = ('pk','user','phone_number','wesite', 'picture')
+    list_display = ('pk','user','phone_number','website', 'picture', 'posts_count')
     list_display_links = ('pk','user')
-    list_editable = ('phone_number', 'wesite', 'picture')
+    list_editable = ('phone_number', 'website', 'picture')
     search_fields = (
         'user__email', 
         'user__username', 
@@ -32,10 +32,11 @@ class ProfileAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Profile', {
-            'fields':(('user', 'picture'),),
+            'fields':(('user', 'picture'),
+                    ('posts_count'),),
         }),
         ('Extra info', {
-            'fields':(('wesite', 'phone_number'),
+            'fields':(('website', 'phone_number'),
                     ('biography'),),
         }),
         ('Metadata', {
@@ -67,3 +68,4 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Followers)
