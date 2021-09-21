@@ -32,7 +32,7 @@ urlpatterns = [
 
     # Posts
     path(
-        route = '<str:username>', 
+        route = 'follow/<str:username>', 
         view = views.UserFollowView.as_view(), 
         name='follow'
     ),
