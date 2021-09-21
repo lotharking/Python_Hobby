@@ -6,7 +6,7 @@ from django.contrib import admin
 
 # Models
 from django.contrib.auth.models import User
-from user.models import Profile
+from user.models import Followers, Profile
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -68,3 +68,4 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Followers)

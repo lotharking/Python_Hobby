@@ -32,7 +32,12 @@ urlpatterns = [
 
     # Posts
     path(
-        route = '<str:slug>', 
+        route = '<str:username>', 
+        view = views.UserFollowView.as_view(), 
+        name='follow'
+    ),
+    path(
+        route = '<str:username>', 
         view = views.UserDetailView.as_view(), 
         name='detail'
     ),

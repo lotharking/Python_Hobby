@@ -1,10 +1,12 @@
 """Users view"""
 
 # Django
+from django.conf.urls import url
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_view
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, FormView, UpdateView
+from django.shortcuts import redirect
+from django.views.generic import DetailView, FormView, UpdateView, RedirectView
 
 # Models
 from django.contrib.auth.models import User
@@ -18,8 +20,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     """User detail view"""
 
     template_name = 'users/detail.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'slug'
     queryset = User.objects.all()
     context_object_name = 'user'
 
@@ -29,12 +29,23 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         user = self.get_object()
         context['posts'] = Posts.objects.filter(user=user).order_by('-created')
         context['followers'] = Followers.objects.filter(user=user)
-        print(context['followers'].user)
         update_count = Profile.objects.get(user=user)
         update_count.posts_count = context['posts'].count()
-        update_count.followers = Followers.objects.filter(user=user).count()
+        update_count.followers = Followers.objects.filter(another_user=user).count()
+        print(Followers.objects.filter(another_user=user).count())
         update_count.save()
         return context
+
+class UserFollowView(LoginRequiredMixin, RedirectView):
+    """User follow view"""
+
+    permanent = False
+    pattern_name = 'users:detail'
+
+    def get_redirect_url(self, *args, **kwargs):
+        # article = get_object_or_404(Article, pk=kwargs['pk'])
+        # article.update_counter()
+        return super().get_redirect_url(*args, **kwargs)
 
 class SignupView(FormView):
     """Users sign up view"""

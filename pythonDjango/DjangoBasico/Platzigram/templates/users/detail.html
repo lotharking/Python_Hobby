@@ -22,20 +22,13 @@
                         >
                             Edit profile
                         </a>
-                    {% elif followers.user == request.user %}
-                        <a
-                            href="{% url "users:detail" user.username %}"
-                            class="ml-5 btn btn-sm btn-success"
-                        >
-                            Edit profile
-                        </a>
                     {% else %}
                         <a
-                            href="{% url "users:detail" user.username %}"
+                            href="{% url "users:follow" user.username %}"
                             class="ml-5 btn btn-sm btn-primary"
                         >
                             Follow
-                        </a>
+                    </a>
                     {% endif %}
                 </h2>
                 <div class="row mt-2" style="font-size: 1.2em">
