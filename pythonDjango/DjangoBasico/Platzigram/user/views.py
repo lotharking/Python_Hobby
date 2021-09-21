@@ -1,60 +1,81 @@
 """Users view"""
 
 # Django
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
-
-# Exception
-from django.db.utils import IntegrityError
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import views as auth_view
+from django.urls import reverse, reverse_lazy
+from django.shortcuts import redirect
+from django.views.generic import DetailView, FormView, UpdateView, RedirectView
 
 # Models
 from django.contrib.auth.models import User
-from user.models import Profile
+from user.models import Followers, Profile
+from posts.models import Posts
 
-def login_view(request):
-    """Login view"""
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user_log = authenticate(request, username=username, password=password)
-    else:
-        return render(request, 'users/login.html')
+# Forms
+from user.forms import SignupForm
 
-    if user_log:
-        login(request, user_log)
-        return redirect('feed')
-    else:
-        return render(request, 'users/login.html', {'error':'Invalid username or password'})
-    return render(request, 'users/login.html')
+class UserDetailView(LoginRequiredMixin, DetailView):
+    """User detail view"""
 
+    template_name = 'users/detail.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+    queryset = User.objects.all()
+    context_object_name = 'user'
 
-def singup(request):
-    """singup view"""
-    if request.method == 'POST':
-        username = request.POST['username']
-        passwd = request.POST['passwd']
-        passwd_confirmation = request.POST['passwd_confirmation']
-        if passwd != passwd_confirmation:
-            return render(request, 'users/singup.html', {'error':'Password confirmation does not match'})
+    def get_context_data(self, **kwargs):
+        """Add users posts to context"""
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()
+        context['posts'] = Posts.objects.filter(user=user).order_by('-created')
+        context['followers'] = Followers.objects.filter(user=user)
+        update_count = Profile.objects.get(user=user)
+        update_count.posts_count = context['posts'].count()
+        update_count.followers = Followers.objects.filter(another_user=user).count()
+        print(Followers.objects.filter(another_user=user).count())
+        update_count.save()
+        return context
 
-        try:
-            user = User.objects.create_user(username=username, password = passwd)
-        except IntegrityError:
-            return render(request, 'users/singup.html', {'error': 'Username is alredy in user'})
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.email = request.POST['email']
-        user.save()
+class UserFollowView(LoginRequiredMixin, RedirectView):
+    """User follow view"""
+    pattern_name = 'users:detail'
 
-        profile = Profile(user=user)
-        profile.save()
+    def get_redirect_url(self, *args, **kwargs):
+        print(kwargs)
+        return super().get_redirect_url(*args, **kwargs)
 
-        return redirect('login')
+class SignupView(FormView):
+    """Users sign up view"""
 
-    return render(request, 'users/singup.html')
+    template_name = 'users/signup.html'
+    form_class = SignupForm
+    success_url = reverse_lazy('users:login')
 
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    """Update the posts"""
+
+    template_name = 'users/update_profile.html'
+    model = Profile
+    fields = ['website', 'phone_number', 'biography', 'picture']
+
+    def get_object(self):
+        """Returns user profile"""
+        return self.request.user.profile
+
+    def get_success_url(self):
+        """Return to user profile"""
+        username = self.object.user.username
+        return reverse('users:detail', kwargs={'slug': username})
+
+class LoginView(auth_view.LoginView):
+    """LoginView"""
+    template_name = 'users/login.html'
+
+class LogoutView(LoginRequiredMixin, auth_view.LogoutView):
+    """Logout view"""
+    template_name = 'users/logged_out.html'
