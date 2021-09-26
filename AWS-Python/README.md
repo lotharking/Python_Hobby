@@ -8,4 +8,4 @@
 # Documentacion importante:
 
 ## Boto3
-- Es aquel quien instala el sdk para python en AWS
+- Libreria para el sdk para python en AWS
