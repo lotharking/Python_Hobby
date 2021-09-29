@@ -22,4 +22,9 @@ urlpatterns = [
         view = views.CreatePostView.as_view(), 
         name='create'
         ), 
+    path(
+        route = 'posts/likes/<int:pk>', 
+        view = views.LikePostView.as_view(), 
+        name='likes'
+        ), 
 ]
