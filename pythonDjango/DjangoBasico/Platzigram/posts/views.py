@@ -4,13 +4,14 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic.base import RedirectView
 
 # Form
 from posts.forms import PostForm
 
 # Models
-from posts.models import Posts
-from user.models import Followers, Profile
+from posts.models import Likes, Posts
+from user.models import Profile
 
 class PostsFeedView(LoginRequiredMixin, ListView):
     """Return all publish posts"""
@@ -49,4 +50,20 @@ class CreatePostView(CreateView):
         context['user'] = self.request.user
         context['profile'] = self.request.user.profile
         return context
+
+class LikePostView(LoginRequiredMixin, RedirectView):
+    """Likes to post"""
+
+    pattern_name = 'posts:feed'
+
+    def get_redirect_url(self, *args, **kwargs):
+        """add like before url"""
+        post_id = Posts.objects.get(pk=kwargs['pk'])
+        likes_users = Profile.objects.get(user=self.request.user)
+        post_final, create = Likes.objects.get_or_create(post=post_id)
+        # post_like, create = Likes.objects.get_or_create(likes_users=likes_users)
+        # print(self.request.user)
+        # post = Posts.objects.get()    
+
+        return super().get_redirect_url()
 
