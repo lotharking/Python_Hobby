@@ -62,7 +62,16 @@ class LikePostView(LoginRequiredMixin, RedirectView):
         likes_users = Profile.objects.get(user=self.request.user)
         post_final, create = Likes.objects.get_or_create(post=post_id)
         # post_like, create = Likes.objects.get_or_create(likes_users=likes_users)
-        # print(self.request.user)
+
+        if post_final.likes_users.filter(user=self.request.user).exists():
+            like_profile = Likes.objects.get(post=post_id)
+            like_profile.likes_users.remove(likes_users)
+            print("True")
+        else:
+            like_profile = Likes.objects.get(post=post_id)
+            like_profile.likes_users.add(likes_users)
+            print("False")
+
         # post = Posts.objects.get()    
 
         return super().get_redirect_url()
