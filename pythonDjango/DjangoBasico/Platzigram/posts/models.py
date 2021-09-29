@@ -23,3 +23,13 @@ class Posts(models.Model):
     def __str__(self):
         """Return title and username"""
         return '{} by @{}'.format(self.title, self.user.username)
+
+class Likes(models.Model):
+    post = models.OneToOneField(Posts, on_delete=models.CASCADE)
+    likes_users = models.ManyToManyField(Profile, related_name='likes_users')
+
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.post.title
