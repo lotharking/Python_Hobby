@@ -10,7 +10,8 @@ from django.views.generic.base import RedirectView
 from posts.forms import PostForm
 
 # Models
-from posts.models import Likes, Posts
+from django.contrib.auth.models import User
+from posts.models import Posts
 from user.models import Profile
 
 class PostsFeedView(LoginRequiredMixin, ListView):
@@ -21,6 +22,14 @@ class PostsFeedView(LoginRequiredMixin, ListView):
     ordering = ('-created')
     paginate_by = 10
     context_object_name = 'posts'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+        # post = self.get_object()
+
+        # print()
+        # context['likes'] = Likes.objects.filter(post =post)
+        # return context
 
 class PostDetailView(LoginRequiredMixin, DetailView):
     """DetailView of posts"""
@@ -59,20 +68,12 @@ class LikePostView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         """add like before url"""
         post_id = Posts.objects.get(pk=kwargs['pk'])
-        likes_users = Profile.objects.get(user=self.request.user)
-        post_final, create = Likes.objects.get_or_create(post=post_id)
-        # post_like, create = Likes.objects.get_or_create(likes_users=likes_users)
+        likes_users = User.objects.get(username=self.request.user)
 
-        if post_final.likes_users.filter(user=self.request.user).exists():
-            like_profile = Likes.objects.get(post=post_id)
-            like_profile.likes_users.remove(likes_users)
-            print("True")
+        if post_id.likes_users.filter(username=self.request.user).exists():
+            post_id.likes_users.remove(likes_users)
         else:
-            like_profile = Likes.objects.get(post=post_id)
-            like_profile.likes_users.add(likes_users)
-            print("False")
-
-        # post = Posts.objects.get()    
+            post_id.likes_users.add(likes_users)
 
         return super().get_redirect_url()
 
