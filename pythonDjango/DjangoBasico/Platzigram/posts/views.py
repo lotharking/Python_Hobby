@@ -24,12 +24,6 @@ class PostsFeedView(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = 'posts'
 
-    def get_context_data(self, **kwargs):
-        """Update the post context"""
-        context = super().get_context_data(**kwargs)
-        context['value'] = False
-        return context
-
 class PostDetailView(LoginRequiredMixin, DetailView):
     """DetailView of posts"""
 
