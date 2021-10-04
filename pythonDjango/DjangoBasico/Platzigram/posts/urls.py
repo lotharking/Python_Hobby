@@ -23,7 +23,7 @@ urlpatterns = [
         name='create'
         ), 
     path(
-        route = 'posts/likes/<int:pk>', 
+        route = 'posts/likes/<int:pk><int:redirect>', 
         view = views.LikePostView.as_view(), 
         name='likes'
         ), 
