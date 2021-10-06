@@ -14,6 +14,9 @@ from posts.models import Posts
 # Forms
 from user.forms import SignupForm
 
+# Utilities
+import pandas as pd
+
 class UserDetailView(LoginRequiredMixin, DetailView):
     """User detail view"""
 
@@ -96,3 +99,12 @@ class LoginView(auth_view.LoginView):
 class LogoutView(LoginRequiredMixin, auth_view.LogoutView):
     """Logout view"""
     template_name = 'users/logged_out.html'
+
+class DetailUsersView(LoginRequiredMixin, DetailView):
+    """Staff detail all users"""
+
+    template_name = 'users/detail_users.html'
+    queryset = User.objects.all()
+    context_object_name = 'user'
+    print(queryset)
+
