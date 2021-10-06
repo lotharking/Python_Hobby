@@ -4,7 +4,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_view
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, FormView, UpdateView, RedirectView
+from django.views.generic import DetailView, FormView, UpdateView, RedirectView, ListView
 
 # Models
 from django.contrib.auth.models import User
@@ -100,11 +100,18 @@ class LogoutView(LoginRequiredMixin, auth_view.LogoutView):
     """Logout view"""
     template_name = 'users/logged_out.html'
 
-class DetailUsersView(LoginRequiredMixin, DetailView):
+class DetailUsersView(LoginRequiredMixin, ListView):
     """Staff detail all users"""
 
     template_name = 'users/detail_users.html'
     queryset = User.objects.all()
     context_object_name = 'user'
-    print(queryset)
+
+    def get_context_data(self, **kwargs):
+        """Add users posts to context"""
+        context = super().get_context_data(**kwargs)
+        values = User.objects.values()
+        df = pd.DataFrame.from_records(values)
+        print(df)
+        return context
 

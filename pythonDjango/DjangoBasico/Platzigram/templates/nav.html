@@ -33,7 +33,7 @@
                 
                 {% if request.user.is_staff %}
                     <li class="nav-item nav-icon">
-                        <a href="#">
+                        <a href="{% url "users:detail_users" %}">
                             <i class="fas fa-info-circle"></i>
                         </a>
                     </li>
