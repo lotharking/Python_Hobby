@@ -2,9 +2,38 @@
 {% load static %}
 
 {% block head_content %}
-<title>@{{ user.username }} | Platzigram</title>
+<title>@All Users | Platzigram</title>
 {% endblock %}
 
 {% block container %}
-
+<div class="container mb-5" style="margin-top: 8em;">
+    <div class="row">
+        <table class="table"> 
+            <thead> 
+                <tr>
+                    {% for data in DataFrame %} 
+                        {% if data != 'password' and data != 'is_staff' and data != 'last_login' %}
+                        <th>{{ data }}</th> 
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </thead> 
+        
+            <tbody>
+                {% for _, record in DataFrame.iterrows %} 
+                    <tr> 
+                        <td>{{ record.id }}</td> 
+                        <td>{{ record.is_superuser }}</td> 
+                        <td>{{ record.username }}</td> 
+                        <td>{{ record.first_name }}</td> 
+                        <td>{{ record.last_name }}</td> 
+                        <td>{{ record.email }}</td> 
+                        <td>{{ record.is_active }}</td> 
+                        <td>{{ record.date_joined }}</td>
+                    </tr> 
+                {% endfor %} 
+            </tbody>
+        </table> 
+    </div>
+</div>
 {% endblock %}

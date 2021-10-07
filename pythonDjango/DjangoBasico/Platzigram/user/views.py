@@ -112,6 +112,10 @@ class DetailUsersView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         values = User.objects.values()
         df = pd.DataFrame.from_records(values)
-        print(df)
+        context['DataFrame'] = df
+        # for _,record in df.iterrows():
+        #     print(record.last_login)
+        # for record in df.iterrows():
+        #     print(record)
         return context
 
