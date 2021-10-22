@@ -32,5 +32,6 @@ class CRideModel(models.Model):
         abstract = True
         
         get_latest_by = 'created'
-
         ordering = ['-created', '-modified']
+
+        
