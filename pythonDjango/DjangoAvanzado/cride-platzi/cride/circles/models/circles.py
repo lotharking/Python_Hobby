@@ -25,7 +25,7 @@ class Circle(CRideModel):
     rides_offered = models.PositiveIntegerField(default=0)
     rides_taken = models.PositiveIntegerField(default=0)
 
-    verified = models.BooleanField(
+    is_verified = models.BooleanField(
         'verified circle',
         default=False,
         help_text='Verified circles are also known as official communities.'
