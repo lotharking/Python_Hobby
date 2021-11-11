@@ -6,9 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 # Serializer
-from cride.users.serializer import UserLoginSerializer
+from cride.serializers.users import UserLoginSerializer
 
-class UserLoginAPIView():
+class UserLoginAPIView(APIView):
     """Users login APIView."""
 
     def post(self, request, *args,  **Kwargs):
