@@ -3,6 +3,7 @@
 # Django
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.base import RedirectView
 
@@ -10,7 +11,8 @@ from django.views.generic.base import RedirectView
 from posts.forms import PostForm
 
 # Models
-from posts.models import Likes, Posts
+from django.contrib.auth.models import User
+from posts.models import Posts
 from user.models import Profile
 
 class PostsFeedView(LoginRequiredMixin, ListView):
@@ -22,12 +24,22 @@ class PostsFeedView(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = 'posts'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['redirect'] = 1
+        return context
+
 class PostDetailView(LoginRequiredMixin, DetailView):
     """DetailView of posts"""
 
     template_name = 'posts/detail.html'
     queryset = Posts.objects.all()
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['redirect'] = 2
+        return context
 
 class CreatePostView(CreateView):
     """CreateView Posts"""
@@ -59,11 +71,18 @@ class LikePostView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         """add like before url"""
         post_id = Posts.objects.get(pk=kwargs['pk'])
-        likes_users = Profile.objects.get(user=self.request.user)
-        post_final, create = Likes.objects.get_or_create(post=post_id)
-        # post_like, create = Likes.objects.get_or_create(likes_users=likes_users)
-        # print(self.request.user)
-        # post = Posts.objects.get()    
+        likes_users = User.objects.get(username=self.request.user)
+        print(kwargs['pk'])
+
+        if post_id.likes_users.filter(username=self.request.user).exists():
+            post_id.likes_users.remove(likes_users)
+        else:
+            post_id.likes_users.add(likes_users)
+
+        if kwargs['redirect'] == 1:
+            return reverse('posts:feed')
+        elif kwargs['redirect'] == 2:
+            return reverse('posts:detail', kwargs= {'pk':kwargs['pk']})
 
         return super().get_redirect_url()
 

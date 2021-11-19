@@ -29,6 +29,11 @@ urlpatterns = [
         view = views.UpdateProfileView.as_view(), 
         name='update'
     ),
+    path(
+        route = 'detail/users/', 
+        view = views.DetailUsersView.as_view(), 
+        name='detail_users'
+    ),
 
     # Posts
     path(

@@ -11,6 +11,8 @@ class Posts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
+    likes_users = models.ManyToManyField(User, related_name='likes_users')
+
     title = models.CharField(max_length=255)
     photo = models.ImageField(upload_to='posts/photo')
 
@@ -24,12 +26,11 @@ class Posts(models.Model):
         """Return title and username"""
         return '{} by @{}'.format(self.title, self.user.username)
 
-class Likes(models.Model):
-    post = models.OneToOneField(Posts, on_delete=models.CASCADE)
-    likes_users = models.ManyToManyField(Profile, related_name='likes_users')
+# class Likes(models.Model):
+#     post = models.OneToOneField(Posts, on_delete=models.CASCADE)
 
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+#     created = models.DateTimeField(auto_now_add=True)
+#     modified = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.post.title
+#     def __str__(self):
+#         return self.post.title
