@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 # Models
-from user.models import Profile
+from user.models.users import Profile
 
 class ProfileCompletionMiddleware:
     """Profile completion middleware.
@@ -21,20 +21,15 @@ class ProfileCompletionMiddleware:
         """Code to be executed for each request before the view is called"""
         if not request.user.is_anonymous:
             # if not request.user.is_staff:
-            has_customer = False
             try:
                 profile = request.user.profile
             except Profile.DoesNotExist:
                 profile = Profile(user=request.user)
                 profile.save()
                 pass
-            # return has_customer and (self.car is not None)
-            # if not request.user.profile:
             if not profile.picture or not profile.biography:
                 if request.path not in [reverse('users:update'), reverse('users:logout')]:
                     return redirect('users:update')
-            # else:
-            #     return redirect('users:signup')
 
         response = self.get_response(request)
 
