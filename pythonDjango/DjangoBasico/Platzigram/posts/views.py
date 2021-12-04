@@ -72,7 +72,6 @@ class LikePostView(LoginRequiredMixin, RedirectView):
         """add like before url"""
         post_id = Posts.objects.get(pk=kwargs['pk'])
         likes_users = User.objects.get(username=self.request.user)
-        print(kwargs['pk'])
 
         if post_id.likes_users.filter(username=self.request.user).exists():
             post_id.likes_users.remove(likes_users)
