@@ -1,6 +1,7 @@
 """ Posts views """
 
 # Django
+from django.http.response import JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
@@ -84,4 +85,16 @@ class LikePostView(LoginRequiredMixin, RedirectView):
             return reverse('posts:detail', kwargs= {'pk':kwargs['pk']})
 
         return super().get_redirect_url()
+
+def likes_view(request):
+    pk = request.GET.get('pk', None)
+    post_id = Posts.objects.get(pk=pk)
+    likes_users = User.objects.get(username=request.user)
+
+    if post_id.likes_users.filter(username=request.user).exists():
+        post_id.likes_users.remove(likes_users)
+    else:
+        post_id.likes_users.add(likes_users)
+    data = {'like': post_id.likes_users.filter(username=request.user).exists(), 'value': post_id.likes_users.count()}
+    return JsonResponse(data)
 
