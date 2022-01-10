@@ -1,6 +1,7 @@
 """ Posts views """
 
 # Django
+from django.http.response import JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
@@ -72,7 +73,6 @@ class LikePostView(LoginRequiredMixin, RedirectView):
         """add like before url"""
         post_id = Posts.objects.get(pk=kwargs['pk'])
         likes_users = User.objects.get(username=self.request.user)
-        print(kwargs['pk'])
 
         if post_id.likes_users.filter(username=self.request.user).exists():
             post_id.likes_users.remove(likes_users)
@@ -85,4 +85,17 @@ class LikePostView(LoginRequiredMixin, RedirectView):
             return reverse('posts:detail', kwargs= {'pk':kwargs['pk']})
 
         return super().get_redirect_url()
+
+def likes_view(request):
+    """Likes update"""
+    pk = request.GET.get('pk', None)
+    post_id = Posts.objects.get(pk=pk)
+    likes_users = User.objects.get(username=request.user)
+
+    if post_id.likes_users.filter(username=request.user).exists():
+        post_id.likes_users.remove(likes_users)
+    else:
+        post_id.likes_users.add(likes_users)
+    data = {'like': post_id.likes_users.filter(username=request.user).exists(), 'value': post_id.likes_users.count()}
+    return JsonResponse(data)
 

@@ -11,13 +11,10 @@
     <img style="width: 100%;" src="{{ post.photo.url }}" alt="{{ post.title }}">
 
     <p class="mt-1 ml-2" >
-        <a href="{% url "posts:likes" post.pk redirect %}" style="color: #000; font-size: 20px;">
-            {% if request.user in post.likes_users.all %}
-                <i class="fas fa-heart"></i>
-            {% else %}
-                <i class="far fa-heart"></i>
-            {% endif %}
-        </a> {{ post.likes_users.count }}
+        <a style="color: #000; font-size: 20px;" class="like-link" data-id="{{ post.pk }}" data-url="{% url 'posts:likes2' %}">
+            <i class="{% if request.user in post.likes_users.all %} fas fa-heart {% else %} far fa-heart {% endif %} like-toggle"
+             data-id="{{ post.pk }}"></i>
+        </a> <i class="like-count" data-id="{{ post.pk }}">{{ post.likes_users.count }}</i>
     </p>
     <p class="ml-2 mt-0 mb-2">
         <b>{{ post.title }}</b> - <small>{{ post.created }}</small>

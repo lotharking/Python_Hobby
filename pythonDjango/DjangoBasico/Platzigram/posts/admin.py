@@ -1,4 +1,4 @@
-from posts.models import Posts
+from posts.models.posts import Posts
 from django.contrib import admin
 
 class PostsAdmin(admin.ModelAdmin):
