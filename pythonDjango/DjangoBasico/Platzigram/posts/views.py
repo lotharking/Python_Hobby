@@ -87,6 +87,7 @@ class LikePostView(LoginRequiredMixin, RedirectView):
         return super().get_redirect_url()
 
 def likes_view(request):
+    """Likes update"""
     pk = request.GET.get('pk', None)
     post_id = Posts.objects.get(pk=pk)
     likes_users = User.objects.get(username=request.user)
