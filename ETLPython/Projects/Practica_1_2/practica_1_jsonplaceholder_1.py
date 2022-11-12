@@ -4,11 +4,16 @@ from prefect import task, Flow, flow
 
 @task
 def extract():
-    pass
+    response = requests.get("https://jsonplaceholder.typicode.com/posts")
+    response = response.json()
+    return response
 
 @task
 def load(response):
-    pass
+    output = response[0]['title']
+    print("*****ATENCION*****")
+    print("titulo de objeto 1")
+    print(str(output))
 
 @flow
 def load_flow():
