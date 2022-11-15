@@ -1,46 +1,43 @@
 import requests
-import datetime
+from datetime import timedelta
 import json
-import logging
 
-from prefect import task, flow
+from prefect import task, Flow
+from prefect.schedules import IntervalSchedule
 
-logging.basicConfig(level=logging.INFO)
+schedule = IntervalSchedule(interval=timedelta(minutes=1))
 
-@task(retries=3,retry_delay_seconds=30)
+@task(log_stdout=True, max_retries=3, retry_delay=timedelta(minutes=1), cache_for=timedelta(minutes=30))
 def extract():
-    logging.info("Se obtiene respuesta de la API")
+    print("*INFO: Se obtiene respuesta de la API")
     raw = requests.get("https://jsonplaceholder.typicode.com/posts/1")
-    logging.info("Codigo de respuesta: {}".format(raw.status_code))
+    print("*INFO: Codigo de respuesta: {}".format(raw.status_code))
     raw = json.loads(raw.text)
 
     with open('.\\ETLPython\Projects\dataraw.json', 'w', encoding='utf-8') as file:
         json.dump(raw, file, ensure_ascii=False, indent=4)
     return raw
 
-@task()
+@task(log_stdout=True)
 def transform(raw):
-    logging.info("Ejecutando transformacion")
+    print("*INFO: Ejecutando transformacion")
     transformed = raw['title']    
 
     with open('.\\ETLPython\Projects\datatransformed.json', 'w', encoding='utf-8') as file:
         json.dump(transformed, file, ensure_ascii=False, indent=4)
     return transformed
 
-@task()
+@task(log_stdout=True)
 def load(transformed):
-    logging.info("*INFO: Procede tarea load")
-    logging.info("*****ATENCION*****")
-    logging.info("titulo de objeto 1")
-    logging.info(str(transformed))
+    print("*INFO: Procede tarea load")
+    print("*INFO: *****ATENCION*****")
+    print("*INFO: titulo de objeto 1")
+    print(str(transformed))
 
-#schedule = IntervalSchedule(interval=datetime.timedelta(minutes=1))
-
-@flow(name="P2.1 JSONPlaceholder 1")
-def load_flow():
+with Flow("P2.1 JSONPlaceholder 1") as flow:
     raw = extract()
     transformed = transform(raw)
     load(transformed)
 
 
-load_flow()
+flow.run()
