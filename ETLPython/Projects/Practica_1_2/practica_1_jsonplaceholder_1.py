@@ -1,6 +1,6 @@
 import requests
 
-from prefect import task, Flow, flow
+from prefect import task, Flow
 
 @task
 def extract():
@@ -15,10 +15,9 @@ def load(response):
     print("titulo de objeto 1")
     print(str(output))
 
-@flow
-def load_flow():
+with Flow("P1.1 JSONPlaceholder 1") as flow:
     raw = extract()
     load(raw)
 
 
-load_flow()
+flow.run()
