@@ -5,8 +5,6 @@ import json
 from prefect import task, Flow
 from prefect.schedules import IntervalSchedule
 
-schedule = IntervalSchedule(interval=timedelta(minutes=1))
-
 @task(log_stdout=True, max_retries=3, retry_delay=timedelta(minutes=1), cache_for=timedelta(minutes=30))
 def extract():
     print("*INFO: Se obtiene respuesta de la API")
@@ -34,7 +32,9 @@ def load(transformed):
     print("*INFO: titulo de objeto 1")
     print(str(transformed))
 
-with Flow("P2.1 JSONPlaceholder 1") as flow:
+schedule = IntervalSchedule(interval=timedelta(minutes=1))
+
+with Flow("P2.1 JSONPlaceholder 1", schedule=schedule) as flow:
     raw = extract()
     transformed = transform(raw)
     load(transformed)
