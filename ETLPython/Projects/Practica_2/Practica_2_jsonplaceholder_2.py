@@ -41,4 +41,4 @@ with Flow("P2.1 JSONPlaceholder 1") as flow:
     load(transformed)
 
 
-flow.run()
+flow.register(project_name="PR0 - practica jph 1")
