@@ -29,7 +29,6 @@ def transform(raw):
 def load(transformed):
     print("*INFO: Procede tarea load")
     print("*INFO: *****ATENCION*****")
-    print("*INFO: titulo de objeto 1")
     print(str(transformed))
 
 #schedule = IntervalSchedule(interval=timedelta(minutes=1))
