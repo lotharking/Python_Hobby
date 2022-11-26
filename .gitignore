@@ -3,3 +3,5 @@ credentials.txt
 dataraw.json
 
 datatransformed.json
+
+.ipynb_checkpoints/.
