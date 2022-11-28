@@ -27,4 +27,3 @@ btc_index = pd.to_datetime([today])
 btc_raw = pd.DataFrame({'btc_usd': btc_raw}, index=btc_index)
 
 raw_dfs['btc_usd'] = btc_raw
-print(raw_dfs)
