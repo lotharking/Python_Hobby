@@ -1,9 +1,13 @@
 # Libraries
 import yfinance as yf
 import pandas as pd
+from datetime import date
+import requests
 
 tickers = ['NVDA', 'TSLA', 'MSFT', 'AMZN', 'AMD', 'INTC']
 raw_dfs = {}
+today = date.today()
+today = today.strftime("%Y-%m-%d")
 
 # NASDAQ's Data
 for ticker in tickers:
@@ -14,4 +18,13 @@ for ticker in tickers:
 
     raw_dfs[ticker] = raw_df
 
+# Data BTC
+reponse = requests.get('https://api.coinbase.com/v2/prices/spot?currency=USD')
+btc_raw = reponse.json()
+btc_raw = float(btc_raw['data']['amount'])
+
+btc_index = pd.to_datetime([today])
+btc_raw = pd.DataFrame({'btc_usd': btc_raw}, index=btc_index)
+
+raw_dfs['btc_usd'] = btc_raw
 print(raw_dfs)
