@@ -15,6 +15,7 @@ for ticker in tickers:
     raw_df = pd.DataFrame(tk.history(period='1d'))
     raw_df.columns = raw_df.columns.str.lower()
     raw_df = raw_df[['open', 'high', 'low', 'close']]
+    raw_df.index = pd.to_datetime(raw_df.index, format='%m/%d/%Y').strftime('%Y-%m-%d')
 
     raw_dfs[ticker] = raw_df
 
