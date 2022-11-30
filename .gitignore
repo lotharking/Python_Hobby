@@ -5,3 +5,5 @@ dataraw.json
 datatransformed.json
 
 .ipynb_checkpoints/.
+
+*.pyc
