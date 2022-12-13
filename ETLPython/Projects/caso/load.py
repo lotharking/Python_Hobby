@@ -75,5 +75,9 @@ tablon['fecha'] = tablon.index
 
 for index, row in tablon.iterrows:
     cursor.execute('INSER INTO dbo.btcvalores values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', row.tolist())
+    cnxn.commit()
+
+cursor.close()
+cnxn.close()
 
 print(sql_create_valor_btc)
