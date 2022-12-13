@@ -73,4 +73,7 @@ if row:
 tablon.insert(0, 'fecha', today)
 tablon['fecha'] = tablon.index
 
+for index, row in tablon.iterrows:
+    cursor.execute('INSER INTO dbo.btcvalores values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', row.tolist())
+
 print(sql_create_valor_btc)
