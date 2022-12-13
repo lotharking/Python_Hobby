@@ -60,4 +60,17 @@ cursor = cnxn.cursor()
 cursor.execute(sql_create_valor_btc)
 cnxn.commit()
 
+# 3.3-
+sql_exists = "SELECT fecha FROM [dbo].[btcvalores] WHERE fecha = '{}'".format(str(today))
+cursor.execute(sql_exists)
+row = cursor.fetchone()
+
+if row:
+    print("Already exists data for this day")
+    # return
+
+# 3.4-
+tablon.insert(0, 'fecha', today)
+tablon['fecha'] = tablon.index
+
 print(sql_create_valor_btc)
