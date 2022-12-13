@@ -23,7 +23,7 @@ name_cols_sql = [ '[' + col + ']' for col in tablon.columns ]
 sql_create_valor_btc = """
         IF NOT EXISTS (SELECT name FROM sys.tables WHERE name = 'btcvalores')
             CREATE TABLE btcvalores (
-                [fecha] DATE PRIMARY KEY,
+                [date] DATE PRIMARY KEY,
                 {} DECIMAL (20, 2),
                 {} DECIMAL (20, 2),
                 {} DECIMAL (20, 2),
@@ -61,7 +61,7 @@ cursor.execute(sql_create_valor_btc)
 cnxn.commit()
 
 # 3.3-
-sql_exists = "SELECT fecha FROM [dbo].[btcvalores] WHERE fecha = '{}'".format(str(today))
+sql_exists = "SELECT date FROM [dbo].[btcvalores] WHERE date = '{}'".format(str(today))
 cursor.execute(sql_exists)
 row = cursor.fetchone()
 
@@ -70,14 +70,13 @@ if row:
     # return
 
 # 3.4-
-tablon.insert(0, 'fecha', today)
-tablon['fecha'] = tablon.index
+tablon.insert(0, 'date', today)
+tablon['date'] = tablon.index
 
-for index, row in tablon.iterrows:
-    cursor.execute('INSER INTO dbo.btcvalores values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', row.tolist())
+for index, row in tablon.iterrows():
+    # print(row.tolist())
+    cursor.execute('INSERT INTO dbo.btcvalores values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', row.tolist())
     cnxn.commit()
 
 cursor.close()
 cnxn.close()
-
-print(sql_create_valor_btc)
