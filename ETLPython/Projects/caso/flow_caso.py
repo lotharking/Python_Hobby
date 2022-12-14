@@ -126,7 +126,6 @@ def load(tablon, today):
     tablon['date'] = tablon.index
 
     for index, row in tablon.iterrows():
-        # print(row.tolist())
         cursor.execute('INSERT INTO dbo.btcvalores values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', row.tolist())
         cnxn.commit()
 
