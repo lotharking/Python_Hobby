@@ -67,7 +67,7 @@ def load(tablon, today):
     # 3.1
     if num_rows_tablon != 1:
         print("Data conflicts. not run on NASDAQ today")
-        # return
+        return
 
     # 3.2
     name_cols_sql = [ '[' + col + ']' for col in tablon.columns ]
@@ -119,7 +119,7 @@ def load(tablon, today):
 
     if row:
         print("Already exists data for this day")
-        # return
+        return
 
     # 3.4- Insert
     tablon.insert(0, 'date', today)
