@@ -60,7 +60,7 @@ cursor = cnxn.cursor()
 cursor.execute(sql_create_valor_btc)
 cnxn.commit()
 
-# 3.3-
+# 3.3- Validate if there are records for that day
 sql_exists = "SELECT date FROM [dbo].[btcvalores] WHERE date = '{}'".format(str(today))
 cursor.execute(sql_exists)
 row = cursor.fetchone()
@@ -69,7 +69,7 @@ if row:
     print("Already exists data for this day")
     # return
 
-# 3.4-
+# 3.4- Insert
 tablon.insert(0, 'date', today)
 tablon['date'] = tablon.index
 
