@@ -8,6 +8,7 @@ import requests
 import pyodbc
 
 from prefect import task, Flow
+from prefect.tasks.secrets import PrefectSecret
 
 # Extract of data
 @task
@@ -61,7 +62,7 @@ def transform(raw_dfs, tickers):
 
 # Load
 @task
-def load(tablon, today):
+def load(tablon, today, credentials):
     num_rows_tablon = len(tablon.index)
 
     # 3.1
@@ -106,7 +107,7 @@ def load(tablon, today):
     server = 'tcp:ud-caso-btc.database.windows.net'
     database = 'caso_nasdaq_btc'
     username = 'admin_ud'
-    password = 'edefs.01'
+    password = credentials
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+password+';')
     cursor = cnxn.cursor()
     cursor.execute(sql_create_valor_btc)
@@ -138,9 +139,11 @@ with Flow("ETL caso") as flow:
     tickers = ['NVDA', 'TSLA', 'MSFT', 'AMZN', 'AMD', 'INTC']
     today = date.today()
     today = today.strftime('%m/%d/%Y')
+    
+    credentials = PrefectSecret("pwd_sql")
 
     raw_dfs = extract(tickers=tickers, today=today)
     tablon = transform(raw_dfs, tickers)
-    load(tablon, today)
+    load(tablon, today, credentials)
 
 flow.run()
