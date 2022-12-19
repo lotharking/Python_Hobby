@@ -139,11 +139,12 @@ with Flow("ETL caso") as flow:
     tickers = ['NVDA', 'TSLA', 'MSFT', 'AMZN', 'AMD', 'INTC']
     today = date.today()
     today = today.strftime('%m/%d/%Y')
-    
+
     credentials = PrefectSecret("pwd_sql")
 
     raw_dfs = extract(tickers=tickers, today=today)
     tablon = transform(raw_dfs, tickers)
     load(tablon, today, credentials)
 
-flow.run()
+flow.register(project_name="Caso BTC")
+# flow.run()
