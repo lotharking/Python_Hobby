@@ -146,5 +146,5 @@ with Flow("ETL caso") as flow:
     tablon = transform(raw_dfs, tickers)
     load(tablon, today, credentials)
 
-# flow.register(project_name="Caso BTC")
-flow.run()
+flow.register(project_name="Caso BTC")
+# flow.run()
