@@ -7,3 +7,5 @@ datatransformed.json
 .ipynb_checkpoints/.
 
 *.pyc
+
+predictions.xlsx
