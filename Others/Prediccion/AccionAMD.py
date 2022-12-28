@@ -24,14 +24,10 @@ closing_prices = history["Close"]
 # Calcular el promedio del movimiento del precio de cierre en el último mes
 movement_average = sum(closing_prices) / len(closing_prices)
 
-# Predecir el precio de cierre del próximo día en base al promedio del movimiento del último mes
-# y al precio de cierre del último día
-predicted_close = closing_prices[-1] + movement_average
-
 # Obtener la fecha de mañana en formato "dd-mm-yyyy"
-tomorrow = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime("%d-%m-%Y")
+tomorrow = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 # Obtener la fecha de hoy en formato "dd-mm-yyyy"
-today = datetime.datetime.today().strftime("%d-%m-%Y")
+today = datetime.datetime.today().strftime("%Y-%m-%d")
 
 # Seleccionar la primera hoja del libro
 worksheet = workbook.active
@@ -39,14 +35,18 @@ worksheet = workbook.active
 # Obtener el número de filas en la hoja
 row_count = worksheet.max_row
 
-# Validar la columna de nombre real
-if worksheet.cell(1, 1).value != "Número de fila":
-    # Si la columna de nombre real está vacía, añadir encabezados a la primera fila
-    worksheet.append(["Número de fila", "Fecha", "Predicción del precio de cierre"])
+# Recorrer todas las filas de la hoja
+for row in worksheet.iter_rows(min_row=2): 
+    # Recorrer los índices de tiempo del DataFrame   
+    for index, check in history.iterrows():
+        # Verificar si el índice de tiempo (fecha) coincide con la fecha que se quiere buscar
+        if index.strftime("%Y-%m-%d") == row[1].value:
+            # Si la celda de la columna "Real" está vacía y es diferente al dia actual
+            if row[3].value is None and row[1].value != today:
+                row[3].value = check["Close"]
 
 # Añadir una nueva fila al final de la hoja
-worksheet.append([row_count+1, tomorrow, predicted_close])
-
+worksheet.append([row_count+1, tomorrow, movement_average])
 # Guardar los cambios en el archivo
 workbook.save(file_path)
 
