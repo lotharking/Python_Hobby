@@ -1,17 +1,11 @@
 import yfinance as yf
 import openpyxl
-import os
 import datetime
 
-# Iterar recursivamente sobre todas las subcarpetas del directorio actual
-for root, dirs, files in os.walk("."):
-    # Buscar el archivo "predictions.xlsx" en la lista de archivos de la carpeta actual
-    if "predictions.xlsx" in files:
-        # Si se encuentra el archivo, obtener la ruta completa del archivo
-        file_path = os.path.join(root, "predictions.xlsx")        
-        # Abrir el archivo de Excel
-        workbook = openpyxl.load_workbook(file_path)
-        break
+# Ruta
+file_path = "./Others/Prediccion/predictions.xlsx"      
+# Abrir el archivo de Excel
+workbook = openpyxl.load_workbook(file_path)
 
 # Obtener información de la acción de AMD
 ticker = yf.Ticker("AMD")
