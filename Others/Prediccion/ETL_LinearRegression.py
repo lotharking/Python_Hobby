@@ -21,30 +21,29 @@ def extract(ticker,file_path):
         # Crear un objeto writer para escribir en el archivo CSV
         writer = csv.writer(csvfile)
         # Añadir una fila con los encabezados
-        writer.writerow(["Fecha", "Close", "Volume", "Open", "High", "Low"])
+        writer.writerow(["Fecha", "Close", "Volume", "Open", "High", "Low", "Stock Splits"])
         
         # Recorrer el DataFrame con los precios de cierre
         for index, row in history.iterrows():
             # Añadir una fila al archivo CSV con la fecha en formato "YYYY-MM-DD" y el precio de cierre
-            writer.writerow([index.strftime("%Y-%m-%d"), row["Close"], row["Volume"], row["Open"], row["High"], row["Low"]])
+            writer.writerow([index.strftime("%Y-%m-%d"), row["Close"], row["Volume"], row["Open"], row["High"], row["Low"], row["Stock Splits"]])
 
 # Transform
 @task
 def transform(file_path):    
-    data = pd.read_csv(file_path, header=0, names=["Close", "Volume", "Open", "High", "Low"])
+    data = pd.read_csv(file_path, header=0, names=["Close", "High", "Low"])
     # Seleccionar la columna de "Close" como la variable dependiente (y)
     y = data["Close"]
 
-    # Seleccionar las columnas de "Volume" y "Market Index" como variables independientes (X)
-    X = data[["Open", "High", "Low"]]
-    print(X)
+    # Seleccionar las columnas de "Volume" y "Stock Splits" como variables independientes (X)
+    X = data[["High", "Low"]]
     # Crear un modelo de regresión lineal
     model = LinearRegression()
 
     # Entrenar el modelo con los datos de entrenamiento
     model.fit(X, y)
     # Hacer predicciones con el modelo entrenado
-    predictions = model.predict([[100000, 20000, 30000]])
+    predictions = model.predict([[100000, 20000]])
     print("el valor es " + str(predictions))
 
 # Load
