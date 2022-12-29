@@ -9,3 +9,5 @@ datatransformed.json
 *.pyc
 
 predictions.xlsx
+
+dataframe.csv
