@@ -4,7 +4,9 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 import datetime
-from sklearn.linear_model import LinearRegression
+from sklearn.neural_network import MLPRegressor
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
 import csv
 import os
 
@@ -31,19 +33,21 @@ def extract(ticker,file_path):
 # Transform
 @task
 def transform(file_path):    
-    data = pd.read_csv(file_path, header=0, names=["Close", "High", "Low"])
-    # Seleccionar la columna de "Close" como la variable dependiente (y)
+    data = pd.read_csv(file_path, header=0, names=["Open", "High", "Low", "Close", "Volume"])
+    
+    X = data[["Open", "High", "Low", "Close", "Volume"]]
     y = data["Close"]
 
-    # Seleccionar las columnas de "Volume" y "Stock Splits" como variables independientes (X)
-    X = data[["High", "Low"]]
-    # Crear un modelo de regresión lineal
-    model = LinearRegression()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Entrenar el modelo con los datos de entrenamiento
-    model.fit(X, y)
-    # Hacer predicciones con el modelo entrenado
-    predictions = model.predict([[100000, 20000]])
+    nn = MLPRegressor(hidden_layer_sizes=(10, 10), max_iter=1000, random_state=42)
+
+    nn.fit(X_train, y_train)
+
+    predictions = nn.predict(X_test)
+
+    mse = mean_squared_error(y_test, predictions)
+    print(f"Mean squared error: {mse:.2f}")
     print("el valor es " + str(predictions))
 
 # Load
