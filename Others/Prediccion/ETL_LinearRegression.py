@@ -16,7 +16,7 @@ from prefect import task, Flow
 @task
 def extract(ticker,file_path):
     # Obtener el precio de cierre de la acción de AMD en el último mes
-    history = ticker.history(period="1mo")
+    history = ticker.history(period="max")
 
     # Abrir el archivo CSV en modo escritura
     with open(file_path, 'w', newline='') as csvfile:
