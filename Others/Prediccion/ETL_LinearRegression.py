@@ -23,32 +23,34 @@ def extract(ticker,file_path):
         # Crear un objeto writer para escribir en el archivo CSV
         writer = csv.writer(csvfile)
         # Añadir una fila con los encabezados
-        writer.writerow(["Fecha", "Close", "Volume", "Open", "High", "Low", "Stock Splits"])
+        writer.writerow(["Fecha", "Open", "High", "Low", "Close", "Volume", "Dividends", "Stock Splits"])
         
         # Recorrer el DataFrame con los precios de cierre
         for index, row in history.iterrows():
             # Añadir una fila al archivo CSV con la fecha en formato "YYYY-MM-DD" y el precio de cierre
-            writer.writerow([index.strftime("%Y-%m-%d"), row["Close"], row["Volume"], row["Open"], row["High"], row["Low"], row["Stock Splits"]])
+            writer.writerow([index.strftime("%Y-%m-%d"), row["Open"], row["High"], row["Low"], row["Close"], row["Volume"], row["Dividends"], row["Stock Splits"]])
 
 # Transform
 @task
 def transform(file_path):    
-    data = pd.read_csv(file_path, header=0, names=["Open", "High", "Low", "Close", "Volume"])
-    
-    X = data[["Open", "High", "Low", "Close", "Volume"]]
-    y = data["Close"]
+    data = pd.read_csv(file_path, header=0, names=["Open", "High", "Low", "Close", "Volume", "Dividends", "Stock Splits"])
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train = data.iloc[:-10, :]
+    X_test = data.iloc[-10:, :]
+    y_train = data['Close'].iloc[:-10]
+    y_test = data['Close'].iloc[-10:]
 
-    nn = MLPRegressor(hidden_layer_sizes=(10, 10), max_iter=1000, random_state=42)
+    # Creamos el modelo de red neuronal
+    model = MLPRegressor(hidden_layer_sizes=(50,50,50), max_iter=1000, alpha=0.001, solver='adam', random_state=42)
 
-    nn.fit(X_train, y_train)
+    # Entrenamos el modelo con los datos de entrenamiento
+    model.fit(X_train, y_train)
 
-    predictions = nn.predict(X_test)
+    # Hacemos predicciones con el modelo entrenado
+    predictions = model.predict(X_test)
 
-    mse = mean_squared_error(y_test, predictions)
-    print(f"Mean squared error: {mse:.2f}")
-    print("el valor es " + str(predictions))
+    # Mostramos las predicciones
+    print(predictions)
 
 # Load
 @task
