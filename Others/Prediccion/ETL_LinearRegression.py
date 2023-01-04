@@ -4,6 +4,7 @@ import pandas as pd
 import yfinance as yf
 import datetime
 from sklearn.neural_network import MLPRegressor
+from sklearn.metrics import mean_squared_error
 import csv
 import os
 
@@ -32,13 +33,13 @@ def extract(ticker,file_path):
 def transform(file_path):    
     data = pd.read_csv(file_path, header=0, names=["Open", "High", "Low", "Close", "Volume", "Dividends", "Stock Splits"])
 
-    X_train = data.iloc[:-10, :]
-    X_test = data.iloc[-10:, :]
-    y_train = data['Close'].iloc[:-10]
-    y_test = data['Close'].iloc[-10:]
+    X_train = data.iloc[:-100, :]
+    X_test = data.iloc[-100:, :]
+    y_train = data['Close'].iloc[:-100]
+    y_test = data['Close'].iloc[-100:]
 
     # Creamos el modelo de red neuronal
-    model = MLPRegressor(hidden_layer_sizes=(50,50,50), max_iter=1000, alpha=0.001, solver='adam', random_state=42)
+    model = MLPRegressor(hidden_layer_sizes=(50,50,50), max_iter=4000, alpha=0.003, solver='adam', random_state=42)
 
     # Entrenamos el modelo con los datos de entrenamiento
     model.fit(X_train, y_train)
@@ -48,6 +49,15 @@ def transform(file_path):
 
     # Mostramos las predicciones
     print(predictions)
+    r = []
+    for p in predictions:
+        if 63 <= p <= 65:
+            r.append(p)
+
+    print(r)
+    print("last value: "+str(y_test[-1]))
+    mse = mean_squared_error(y_test, predictions)
+    print("Error: "+str(mse))
 
 # Load
 @task
