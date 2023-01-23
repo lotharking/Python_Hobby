@@ -77,7 +77,7 @@ body{
   cursor: pointer;
 }
 
-.hoy, .crear{
+.hoy{
   width: 5%;
   padding: 20px 0;
   /* height: 28px; */
@@ -93,29 +93,31 @@ body{
   cursor: pointer;
 }
 
-/* .crear{ */
-  /* width: 40px; */
+.crear{
+  width: 50%;
   /* height: 28px; */
-  /* font-size: 16px; */
-  /* background: white; */
-  /* margin: 22px; */
-  /* border-radius: 20px; */
-  /* color: black; */
-  /* line-height: 30px; */
-  /* text-align: center; */
-  /* margin-left: 0%; */
-  /* cursor: pointer; */
-/* } */
+  font-size: 16px;
+  font-weight: bold;
+  float: left;
+  cursor: pointer;
+}
 
-/* #pin{ */
-  /* background-image: url(assets/options.PNG); */
-  /* width: 4%; */
-  /* height: 22px; */
-  /* margin: 20px; */
-  /* margin-left: -20px; */
-  /* margin-right: 0; */
-  /* cursor: pointer; */
-/* } */
+#cobertorCrear {
+  display: flex;
+  width: 6%;
+  display:inline-block;
+  padding: 20px 0;
+  justify-content: center;
+}
+
+#pin{
+  background-image: url(assets/options.PNG);
+  width: 50%;
+  height: 22px;
+  float: right;
+  margin-top: -8%;
+  cursor: pointer;
+}
 
 /* .busqueda{ */
   /* display: flex; */
