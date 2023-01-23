@@ -54,7 +54,7 @@ body{
   display: flex;
   justify-content: center;
   font-weight: bold;
-  margin: 10px;
+  margin-top: 10px;
   color: white;
   cursor: pointer;
 }
@@ -141,7 +141,6 @@ body{
 #notifications{
   background-image: url(assets/notificaciones.PNG);
   background-repeat: no-repeat;
-  width: 80%;
   background-size: cover;
   background-position: center;
   cursor: pointer;
@@ -152,7 +151,6 @@ body{
 #message{
   background-image: url(assets/mensajes.PNG);
   background-repeat: no-repeat;
-  width: 80%;
   background-size: cover;
   background-position: center;
   cursor: pointer;
@@ -163,7 +161,6 @@ body{
 #profile-img{
   background-image: url(assets/perfil.PNG);
   background-repeat: no-repeat;
-  width: 80%;
   background-size: cover;
   background-position: center;
   cursor: pointer;
@@ -174,7 +171,6 @@ body{
 #options{
   background-image: url(assets/options.PNG);
   background-repeat: no-repeat;
-  width: 80%;
   background-size: cover;
   background-position: center;
   cursor: pointer;
