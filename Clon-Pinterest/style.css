@@ -141,7 +141,7 @@ input:focus{
 #notifications{
   background-image: url(assets/notificaciones.PNG);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   cursor: pointer;
   width: 60%;
@@ -151,7 +151,7 @@ input:focus{
 #message{
   background-image: url(assets/mensajes.PNG);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   cursor: pointer;
   width: 60%;
@@ -161,7 +161,7 @@ input:focus{
 #profile-img{
   background-image: url(assets/perfil.PNG);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   cursor: pointer;
   width: 60%;
@@ -171,7 +171,7 @@ input:focus{
 #options{
   background-image: url(assets/options.PNG);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   cursor: pointer;
   width: 60%;
