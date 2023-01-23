@@ -11,3 +11,7 @@ datatransformed.json
 predictions.xlsx
 
 dataframe.csv
+
+*.jpg
+*.webp
+*.png
