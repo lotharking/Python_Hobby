@@ -228,10 +228,10 @@ input:focus{
 }
 
 @media (max-width:700px){
-  .busqueda{
+  /* .busqueda{
    margin-top: 2em;
    margin-left: 1em;
-  }
+  } */
 }
 
 
