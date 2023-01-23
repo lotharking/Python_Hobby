@@ -126,10 +126,10 @@ body{
   /* margin: -19px; */
 /* }  */
 
-/* input:focus{ */
-  /* outline: none; */
-  /* box-shadow: 0 1px 6px 0px transparent; */
-/* } */
+input:focus{
+  outline: none;
+  box-shadow: 0 1px 6px 0px transparent;
+}
   
 .contenedorIconos {
   display: flex;
