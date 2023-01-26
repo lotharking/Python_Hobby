@@ -69,20 +69,20 @@ body{
   cursor: pointer;
 }
 
-.crear{
-  width: 50%;
-  font-size: 16px;
-  font-weight: bold;
-  float: left;
-  cursor: pointer;
-}
-
 #cobertorCrear {
   display: flex;
   width: 6%;
   display:inline-block;
   padding: 20px 0;
   justify-content: center;
+}
+
+.crear{
+  width: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  float: left;
+  cursor: pointer;
 }
 
 #pin{
