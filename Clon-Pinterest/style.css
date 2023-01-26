@@ -97,7 +97,7 @@ body{
 
 .busqueda{
   display: flex;
-  width: 60%;
+  width: 70%;
   margin-top: 1%;
   margin-left: 0.5%;
   height: 60%;
@@ -133,7 +133,7 @@ input:focus{
   
 .contenedorIconos {
   display: flex;
-  width: 4%;
+  width: 3%;
   margin-top: 1%;
   margin-left: 1%;
 }
@@ -144,8 +144,8 @@ input:focus{
   background-size: contain;
   background-position: center;
   cursor: pointer;
-  width: 60%;
-  height: 60%;
+  width: 90%;
+  height: 90%;
 }
 
 #message{
@@ -154,8 +154,8 @@ input:focus{
   background-size: contain;
   background-position: center;
   cursor: pointer;
-  width: 60%;
-  height: 60%;
+  width: 90%;
+  height: 90%;
 }
 
 #profile-img{
@@ -164,8 +164,8 @@ input:focus{
   background-size: contain;
   background-position: center;
   cursor: pointer;
-  width: 60%;
-  height: 60%;
+  width: 90%;
+  height: 90%;
 }
 
 #options{
@@ -174,8 +174,8 @@ input:focus{
   background-size: contain;
   background-position: center;
   cursor: pointer;
-  width: 60%;
-  height: 60%;
+  width: 90%;
+  height: 90%;
 }
 
 .contenedor{
