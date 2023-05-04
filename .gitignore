@@ -15,3 +15,5 @@ dataframe.csv
 *.jpg
 *.webp
 *.png
+
+.env
