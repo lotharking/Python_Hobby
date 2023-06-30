@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Proyecto Django</title>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="{% url 'clientes:listar' %}">Listar Clientes</a></li>
+      <li><a href="{% url 'clientes:crear' %}">Crear Cliente</a></li>
+      <!-- Otros enlaces de navegación -->
+    </ul>
+  </nav>
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
